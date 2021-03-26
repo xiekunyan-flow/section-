@@ -7,6 +7,7 @@
 
 using namespace::std;
 using namespace::J;
+using namespace::J:basic;
 int main() {
     cout << "Start test range vessel" << endl;
     _Section_node_base section_node_base;
