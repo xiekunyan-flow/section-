@@ -20,6 +20,7 @@ namespace J{
             _Section_node_base() noexcept : _parent(nullptr)  {}
             void print();
         };
+
     }
 }
 
