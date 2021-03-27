@@ -18,9 +18,15 @@ namespace J{
         public:
             _Section_node_base* _parent;
             _Section_node_base() noexcept : _parent(nullptr)  {}
-            void print();
+            std::string print();
         };
-
+        
+        class _Section_leaf_node_base : public _Section_node_base {
+            public:
+            _Section_leaf_node_base* _next;
+            _Section_leaf_node_base* _prev;
+            _Section_leaf_node_base() noexcept : _next(nullptr), _prev(nullptr) {}
+        };
     }
 }
 

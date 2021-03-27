@@ -4,8 +4,8 @@
 
 namespace J{
     using namespace J::basic;
-    void _Section_node_base::print() {
-        std::cout << "_Section_node_base::print()";
+    std::string _Section_node_base::print() {
+        return "_Section_node_base::print()";
     }
 }
 
