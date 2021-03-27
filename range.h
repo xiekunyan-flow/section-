@@ -1,6 +1,0 @@
-#ifndef RANGE_H_INCLUDED
-#define RANGE_H_INCLUDED
-
-
-
-#endif // RANGE_H_INCLUDED
