@@ -1,5 +1,5 @@
-#ifndef RANGE_NODE_H_INCLUDE
-#define RANGE_NODE_H_INCLUDE
+#ifndef SECTION_NODE_H_INCLUDE
+#define SECTION_NODE_H_INCLUDE
 #include <iostream>
 
 namespace J{
@@ -23,6 +23,6 @@ namespace J{
     }
 }
 
-#include "range_node.cc"
+#include "section_node.cc"
 
 #endif
