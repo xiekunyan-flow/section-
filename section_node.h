@@ -46,6 +46,22 @@ namespace J{
         public:
             std::size_t _node_count; // Keeps track of number of nodes in tree.
             std::size_t _size; // Number of leaf nodes.
+
+            _Section_node_header() noexcept : _node_count(0), _size(0) {
+                _parent = nullptr;
+                _next = this;
+                _prev = this;
+            }
+            _Section_node_header(_Section_node_header&& __x) : _Section_leaf_node_base{__x._parent, __x._next, __x._prev}, _node_count(__x._node_count), _size(__x._size) {
+                if (__x._next == &__x) 
+                    _next = _prev = this;
+                else {
+                    _next->_prev = _prev->_next = this;
+                    __x._next = __x._prev = &__x;
+                    __x._node_count = 0;
+                    __x._size = 0;
+                }
+            }
         };
     }
 }

@@ -21,9 +21,15 @@ section.add(it1, it2);
 _Val _M_storage; //231行，可替换为
 ```
 
-## questions
+## Iterator
 
 1. 关于`iterator`，能否同时支持`int a = iterator->second;`或者`int a = *iterator` `cout << iterator->second << endl;` 和 `*iterator += 3;`其实应该很简单，就是重载`=`，`++`，`+=`这些运算符就行。
-2. `*iterator`是`pair`类型
-3. 泛型支持
+2. `*iterator`是`pair`类型，当返回const时
 
+## Questions
+
+1. `_Rb_tree_key_compare`
+
+## Notes
+
+1. &&不能处理const&, 处理&还需要move
