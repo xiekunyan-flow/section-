@@ -2,7 +2,7 @@
 
 1. 指向父节点，指向子节点，叶子节点不同
 2. 叶子节点和非叶子节点、end()
-3. `_Section_node_base`->`_Section_leaf_node_base`和`Section_tree_node_base`
+3. `_Section_node_base`->`_Section_leaf_node_base`和`_Section_tree_node_base`
 4. `_Section_leaf_node_base`->`_Section_node_header`和`_Section_leaf_node`
 5. `_Section_tree_node_base`->`_Section_nonleaf_node`和`_Section_leaf_node`
 
