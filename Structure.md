@@ -6,8 +6,6 @@
 4. `_Section_leaf_node_base`->`_Section_node_header`和`_Section_leaf_node`
 5. `_Section_tree_node_base`->`_Section_nonleaf_node`和`_Section_leaf_node`
 
-1. 
-
 ```c++
 *iterator += 2;
 

@@ -46,6 +46,10 @@ int main() {
     static_cast<_Section_leaf_node_base*>(section_node_base_ptr)->_next = &section_leaf_node_base;
     _t(section_node_base_ptr == section_leaf_node_base._next, "static_cast the father node to child, modify ._next variable which father not have.");
 
+    _Section_tree_node_base section_tree_node_base;
+    _Section_tree_node_base section_tree_node_base2(section_node_base_ptr, &section_tree_node_base, &section_tree_node_base);
+    _t(section_tree_node_base2._parent == section_node_base_ptr && section_tree_node_base2._left == &section_tree_node_base && section_tree_node_base2._right == &section_tree_node_base, "New Section_tree_node_base, show its ._parent: ", section_tree_node_base2._parent, ", ._left: ", section_tree_node_base2._left,", ._right: ", section_tree_node_base2._right);
+    
     cout << "-----------------------" << endl;
     cout << "End test section vessel" << endl;
     return 0;

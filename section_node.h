@@ -18,23 +18,35 @@ namespace J{
         public:
             _Section_node_base* _parent;
             _Section_node_base() noexcept : _parent(nullptr)  {}
+            _Section_node_base(_Section_node_base* __parent) noexcept : _parent(__parent) {}
+
+            //
+            // @brief Only used for test.
+            // 
             std::string print();
         };
         
         class _Section_leaf_node_base : public _Section_node_base {
         public:
-            _Section_leaf_node_base* _next;
-            _Section_leaf_node_base* _prev;
+            _Section_leaf_node_base* _next; // next node
+            _Section_leaf_node_base* _prev; // prev node
             _Section_leaf_node_base() noexcept : _next(nullptr), _prev(nullptr) {}
+            _Section_leaf_node_base(_Section_node_base* __parent, _Section_leaf_node_base* __next, _Section_leaf_node_base* __prev) noexcept : _Section_node_base{__parent}, _next(__next), _prev(__prev) {}
         };
 
         class _Section_tree_node_base : public _Section_node_base {
         public:
-            _Section_tree_node_base* _left;
-            _Section_tree_node_base* _right;
+            _Section_tree_node_base* _left;  // left child
+            _Section_tree_node_base* _right; // right child
             _Section_tree_node_base() noexcept : _left(nullptr), _right(nullptr) {}
+            _Section_tree_node_base(_Section_node_base* __parent, _Section_tree_node_base* __left, _Section_tree_node_base* __right) : _Section_node_base{__parent}, _left(__left), _right(__right) {}
         };
 
+        class _Section_node_header : public _Section_leaf_node_base {
+        public:
+            std::size_t _node_count; // Keeps track of number of nodes in tree.
+            std::size_t _size; // Number of leaf nodes.
+        };
     }
 }
 

@@ -22,7 +22,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: g++-9 build active file",
+            "preLaunchTask": "C/C++: g++-9 build active file ver(2)",
             "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
