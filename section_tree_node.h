@@ -18,6 +18,13 @@ namespace J{
                 bool _Is_leaf; //mark if its child is leaf
                 value_type _M_field;
                 mapped_type _M_marked;
+                //操作标记
+                void _M_change_mark(mapped_type __val){
+                    _M_marked += val;
+                }
+                void _M_clear_mark(){
+                    _M_marked  = 0;
+                }
             };
 
     }

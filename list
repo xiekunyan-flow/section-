@@ -1,6 +1,8 @@
+list to do
 需要保证_Section_node_header 初始化时，初始化一个_Section_tree_node 
 header _parent指向tree根节点，_next,_prev指向自己
-
+#F.0.3
+完成部分插入函数
 #F.0.2
 实现基本分配器全流程
 #F.0.1

@@ -77,21 +77,32 @@ namespace section
             typedef pair<_Base_ptr, _Base_ptr> _Res;
 
         }
+    private:
+        //将标记下沉
+        void _M_push_down(__Tree_node_type __x){
+            if(__x->_left != NULL){__x->_left._M_change_mark(__x->_M_marked);}
+            if(__x->_right!= NULL){__x->right._M_change_mark(__x->_M_marked);}
+            __x->_M_clear_mark();
+        }
     }
+
     //name implied
     template<typename _Key, typename _Val,
 	   typename _Compare, typename _Alloc>
     template<typename... _Args>
-      pair<typename _Rb_tree<_Key, _Val,_Compare, _Alloc>::iterator, bool>
-      _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
+      typename _Rb_tree<_Key, _Val,_Compare, _Alloc>::_Tree_node_type
+      _Rb_tree<_Key, _Val, _Compare, _Alloc>::
       _M_get_insert_unique_pos(const Key_type& k)
       {
-          typedef pair<_Tree_node_ptr,_Tree_node_ptr> _Res;
           _Tree_node_type __x = _M_root();
-          //_Tree_node_type __y = _M_end();
-          while(!__x._IS_node_()){
-              __x 
+          //
+         
+          while(!__x._M_is_node_()){
+              _M_push_down(_x);
+              __x = _M_key_compare(__k, _S_key(__x)) ?
+              _S_left(__x) : __S_right(__x);
           }
+          return __x;
       }
 
     template<typename _Key, typename _Val,
