@@ -1,4 +1,10 @@
-#F.01
+list to do:
+需要保证_Section_node_header 初始化时，初始化一个_Section_tree_node 
+header _parent指向tree根节点，_next,_prev指向自己
+
+#F.0.2
+实现基本分配器全流程
+#F.0.1
 1.change _Section_nonleaf_node to _Section_tree_node
 2.realize _Section_tree_node and _Section_leaf_node and _Section_node_header
 3.change _Section_leaf_node then only inherit by `_Section_leaf_node_base`
