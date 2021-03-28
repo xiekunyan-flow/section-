@@ -1,4 +1,3 @@
-list to do:
 需要保证_Section_node_header 初始化时，初始化一个_Section_tree_node 
 header _parent指向tree根节点，_next,_prev指向自己
 
