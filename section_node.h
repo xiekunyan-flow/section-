@@ -42,30 +42,30 @@ namespace J{
         public:
             _Section_leaf_node_base* _next; // next node
             _Section_leaf_node_base* _prev; // prev node
-            _Section_leaf_node_base* _parent; // parent
             _Section_leaf_node_base() noexcept : _next(nullptr), _prev(nullptr) {}
-            _Section_leaf_node_base(_Section_leaf_node_base* __parent, _Section_leaf_node_base* __next, _Section_leaf_node_base* __prev) noexcept : _parent(__parent), _next(__next), _prev(__prev) {}
+            _Section_leaf_node_base(_Section_leaf_node_base* __next, _Section_leaf_node_base* __prev) noexcept : _next(__next), _prev(__prev) {}
         };
 
         class _Section_tree_node_base {
         public:
             _Section_tree_node_base* _left;  // left child
             _Section_tree_node_base* _right; // right child
+            _Section_tree_node_base* _parent; // parent
             _Section_tree_node_base() noexcept : _left(nullptr), _right(nullptr) {}
-            _Section_tree_node_base(_Section_tree_node_base* __left, _Section_tree_node_base* __right) : _left(__left), _right(__right) {}
+            _Section_tree_node_base(_Section_tree_node_base* __parent,_Section_tree_node_base* __left, _Section_tree_node_base* __right) : _parent(__parent), _left(__left), _right(__right) {}
         };
 
         class _Section_node_header : public _Section_leaf_node_base {
         public:
+            _Section_tree_node_base* _root; // Root of the tree.
             std::size_t _node_count; // Keeps track of number of nodes in tree.
             std::size_t _size; // Number of leaf nodes.
 
-            _Section_node_header() noexcept : _node_count(0), _size(0) {
-                _parent = nullptr;
+            _Section_node_header() noexcept : _root(nullptr), _node_count(0), _size(0) {
                 _next = this;
                 _prev = this;
             }
-            _Section_node_header(_Section_node_header&& __x) : _Section_leaf_node_base{__x._parent, __x._next, __x._prev}, _node_count(__x._node_count), _size(__x._size) {
+            _Section_node_header(_Section_node_header&& __x) : _Section_leaf_node_base{__x._next, __x._prev}, _root(__x._root), _node_count(__x._node_count), _size(__x._size) {
                 if (__x._next == &__x) 
                     _next = _prev = this;
                 else {

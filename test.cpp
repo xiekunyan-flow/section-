@@ -35,7 +35,7 @@ int main() {
     // test(true, "Call function of _Section_node_base declared in section_node.h but defined in range_node.cc, with its output: ", section_node_base.print());
     
     _Section_leaf_node_base section_leaf_node_base;
-    test(section_leaf_node_base._parent == nullptr, "Define object _Section_leaf_node_base, with default constructor, get its parent: ", section_leaf_node_base._parent, ", expected nullptr");
+    // test(section_leaf_node_base._root == nullptr, "Define object _Section_leaf_node_base, with default constructor, get its parent: ", section_leaf_node_base._root, ", expected nullptr");
 
     test(section_leaf_node_base._next == nullptr && section_leaf_node_base._prev == nullptr, "Checkout whether section_leaf_node_base._next is nullptr: ", section_leaf_node_base._next, " ,expected nullptr;", " Checkout whether section_leaf_node_base._prev is nullptr: ", section_leaf_node_base._prev, " ,expected nullptr;");
 
@@ -55,7 +55,7 @@ int main() {
     {
         _Section_node_header section_node_header;
         auto& h = section_node_header;
-        test(h._parent == nullptr && h._next == &h && h._prev == &h, "New _Section_node_header, show its ._parent: ", h._parent, ", ._next: ", h._next, ", ._prev: ", h._prev);
+        test(h._root == nullptr && h._next == &h && h._prev == &h, "New _Section_node_header, show its ._parent: ", h._root, ", ._next: ", h._next, ", ._prev: ", h._prev);
 
         test(h._node_count == 0 && h._size == 0, "Verify section_node_header's ._size: ", h._size, ", .node_count: ", h._node_count, ", both expected 0");
 
