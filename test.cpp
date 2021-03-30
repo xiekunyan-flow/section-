@@ -33,7 +33,7 @@ void test(bool __judgement, const Types&... __prints);
 void testpart(string testpart);
 
 int main() {
-    fout.open("test.txt");
+    fout.open("testLog.txt");
     cout << "Start test section vessel" << endl;
     cout << "-------------------------\n" << endl;
     fout << "Start test section vessel" << endl;
@@ -122,7 +122,7 @@ int main() {
     cout << "-----------------------" << endl;
     cout << "End test section vessel, successed part("<<  success_parts << "/" << parts << ")" << endl;
     fout << "-----------------------" << endl;
-    cout << "End test section vessel, successed part("<<  success_parts << "/" << parts << ")" << endl;
+    fout << "End test section vessel, successed part("<<  success_parts << "/" << parts << ")" << endl;
     fout.close();
     return 0;
 }
@@ -151,17 +151,22 @@ void test(bool judge, const Types&... args) {
 void testpart(string s) {
     if (testmachine.part != 0) {
         cout << "} successed(" << testmachine.success << '/' << testmachine.num << "). ";
+        fout << "} successed(" << testmachine.success << '/' << testmachine.num << "). ";
         if (testmachine.success == testmachine.num) {
             success_parts += 1;
             cout << "Pass test.";
+            fout << "Pass test.";
         }
         else
             cout << "\n ! Not Pass Test, have " << -testmachine.success + testmachine.num << " bug(s).";
         cout << endl;
         cout << endl;
+        fout << endl;
+        fout << endl;
     }
     if (s == "STOP TEST") return;
     cout << ">> Start Test " << testmachine.head << testmachine.part << " " << s << " {" << endl;
+    fout << ">> Start Test " << testmachine.head << testmachine.part << " " << s << " {" << endl;
     testmachine.part += 1;
     testmachine.num = 0;
     testmachine.success = 0;

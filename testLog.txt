@@ -1,7 +1,11 @@
 Start test section vessel
 -------------------------
 
+>> Start Test J.0 Checking _Section_leaf_node_base {
 J.0=1 Checkout whether section_leaf_node_base._next is nullptr: 0 ,expected nullptr; Checkout whether section_leaf_node_base._prev is nullptr: 0 ,expected nullptr;
+} successed(1/1). Pass test.
+
+>> Start Test J.1 Checking _Section_node_header {
 J.0=1 New _Section_node_header, show its ._parent: 0, ._right: 0x7fffffffe1b0, ._left: 0x7fffffffe1b0
 J.1=1 Verify section_node_header's ._size: 0, .node_count: 0, both expected 0
 J.2=1 New _Section_node_header section_node_header2 consturcted by section_node_header.
@@ -15,4 +19,7 @@ J.9=1 Testing _Section_leaf_node, new _Section_leaf_node.
 J.10=1 Test whether successfully inherit from _Section_tree_node_base.
 J.11=1 Test whether ._pair member works.
 J.12=1 New section<int, int> sec
+} successed(13/13). Pass test.
+
 -----------------------
+End test section vessel, successed part(2/2)
