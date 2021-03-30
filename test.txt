@@ -1,0 +1,18 @@
+Start test section vessel
+-------------------------
+
+J.0=1 Checkout whether section_leaf_node_base._next is nullptr: 0 ,expected nullptr; Checkout whether section_leaf_node_base._prev is nullptr: 0 ,expected nullptr;
+J.0=1 New _Section_node_header, show its ._parent: 0, ._right: 0x7fffffffe1b0, ._left: 0x7fffffffe1b0
+J.1=1 Verify section_node_header's ._size: 0, .node_count: 0, both expected 0
+J.2=1 New _Section_node_header section_node_header2 consturcted by section_node_header.
+J.3=1 Checkout whether section_node_header2's ._left: 0x7fffffffe1e0, ._right: 0x7fffffffe1e0, this: 0x7fffffffe1e0, expected equal.
+J.4=1 New _Section_node_header section_node_header4 cannot consturcted by const section_node_header&.
+J.5=1 New _Section_node_header section_node_header5 connected section_node_header forming a circle.
+J.6=1 New _Section_node_header section_node_header6 constructed by section_node_header5.
+J.7=1 Check whether section_node_header and section_node_header6 forms a circle, section_node_header's this: 0x7fffffffe1b0, ._left: 0x7fffffffe240, ._right: 0x7fffffffe240, section_node_header6's this: 0x7fffffffe240, ._left: 0x7fffffffe1b0, ._right: 0x7fffffffe1b0
+J.8=1 Check whether section_node_header5 is reconstructed by default. section_node_header5' this: 0x7fffffffe210, ._left: 0x7fffffffe210, ._right: 0x7fffffffe210
+J.9=1 Testing _Section_leaf_node, new _Section_leaf_node.
+J.10=1 Test whether successfully inherit from _Section_tree_node_base.
+J.11=1 Test whether ._pair member works.
+J.12=1 New section<int, int> sec
+-----------------------

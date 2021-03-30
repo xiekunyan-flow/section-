@@ -8,7 +8,8 @@
         "map": "cpp",
         "algorithm": "cpp",
         "string": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "ostream": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

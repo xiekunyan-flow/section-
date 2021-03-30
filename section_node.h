@@ -55,22 +55,22 @@ namespace J{
             _Section_tree_node_base(_Section_tree_node_base* __parent,_Section_tree_node_base* __left, _Section_tree_node_base* __right) : _parent(__parent), _left(__left), _right(__right) {}
         };
 
-        class _Section_node_header : public _Section_leaf_node_base {
+        class _Section_node_header : public _Section_tree_node_base {
         public:
-            _Section_tree_node_base* _root; // Root of the tree.
             std::size_t _node_count; // Keeps track of number of nodes in tree.
             std::size_t _size; // Number of leaf nodes.
 
-            _Section_node_header() noexcept : _root(nullptr), _node_count(0), _size(0) {
-                _next = this;
-                _prev = this;
+            _Section_node_header() noexcept : _node_count(0), _size(0) {
+                _left = this;
+                _right = this;
+                _parent = nullptr;
             }
-            _Section_node_header(_Section_node_header&& __x) : _Section_leaf_node_base{__x._next, __x._prev}, _root(__x._root), _node_count(__x._node_count), _size(__x._size) {
-                if (__x._next == &__x) 
-                    _next = _prev = this;
+            _Section_node_header(_Section_node_header&& __x) : _Section_tree_node_base{__x._parent, __x._left, __x._right}, _node_count(__x._node_count), _size(__x._size) {
+                if (__x._right == &__x) 
+                    _right = _left = this;
                 else {
-                    _next->_prev = _prev->_next = this;
-                    __x._next = __x._prev = &__x;
+                    _right->_left = _left->_right = this;
+                    __x._right = __x._left = &__x;
                     __x._node_count = 0;
                     __x._size = 0;
                 }
