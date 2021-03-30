@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "list": "cpp",
+        "iostream": "cpp",
+        "*.tcc": "cpp",
+        "set": "cpp",
+        "numeric": "cpp",
+        "map": "cpp",
+        "algorithm": "cpp",
+        "string": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
+}
