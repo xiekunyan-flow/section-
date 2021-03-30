@@ -29,28 +29,28 @@ int main() {
     testmachine.head = "J.1.";
     testmachine.num = 0;
 
-    _Section_node_base section_node_base;
-    test(nullptr == section_node_base._parent, "Define object _Section_node_base, with default constructor, get its parent: ", section_node_base._parent, "expected nullptr.");
+    // _Section_node_base section_node_base;
+    // test(nullptr == section_node_base._parent, "Define object _Section_node_base, with default constructor, get its parent: ", section_node_base._parent, "expected nullptr.");
 
-    test(true, "Call function of _Section_node_base declared in section_node.h but defined in range_node.cc, with its output: ", section_node_base.print());
+    // test(true, "Call function of _Section_node_base declared in section_node.h but defined in range_node.cc, with its output: ", section_node_base.print());
     
     _Section_leaf_node_base section_leaf_node_base;
     test(section_leaf_node_base._parent == nullptr, "Define object _Section_leaf_node_base, with default constructor, get its parent: ", section_leaf_node_base._parent, ", expected nullptr");
 
     test(section_leaf_node_base._next == nullptr && section_leaf_node_base._prev == nullptr, "Checkout whether section_leaf_node_base._next is nullptr: ", section_leaf_node_base._next, " ,expected nullptr;", " Checkout whether section_leaf_node_base._prev is nullptr: ", section_leaf_node_base._prev, " ,expected nullptr;");
 
-    section_node_base._parent = &section_leaf_node_base;
-    test(section_node_base._parent == &section_leaf_node_base, "Let section_node_base._parent -> section_leaf_node_base, see their memory address. section_node_base._parent: ", section_node_base._parent, ", &section_leaf_node_base: ", &section_leaf_node_base);
+    // section_node_base._parent = &section_leaf_node_base;
+    // test(section_node_base._parent == &section_leaf_node_base, "Let section_node_base._parent -> section_leaf_node_base, see their memory address. section_node_base._parent: ", section_node_base._parent, ", &section_leaf_node_base: ", &section_leaf_node_base);
 
-    _Section_node_base* section_node_base_ptr(&section_leaf_node_base);
-    test(section_node_base_ptr == &section_leaf_node_base, "Define _Section_node_base_ptr, point to section_leaf_node_base.");
+    // _Section_node_base* section_node_base_ptr(&section_leaf_node_base);
+    // test(section_node_base_ptr == &section_leaf_node_base, "Define _Section_node_base_ptr, point to section_leaf_node_base.");
 
-    static_cast<_Section_leaf_node_base*>(section_node_base_ptr)->_next = &section_leaf_node_base;
-    test(section_node_base_ptr == section_leaf_node_base._next, "static_cast the father node to child, modify ._next variable which father not have.");
+    // static_cast<_Section_leaf_node_base*>(section_node_base_ptr)->_next = &section_leaf_node_base;
+    // test(section_node_base_ptr == section_leaf_node_base._next, "static_cast the father node to child, modify ._next variable which father not have.");
 
-    _Section_tree_node_base section_tree_node_base;
-    _Section_tree_node_base section_tree_node_base2(section_node_base_ptr, &section_tree_node_base, &section_tree_node_base);
-    test(section_tree_node_base2._parent == section_node_base_ptr && section_tree_node_base2._left == &section_tree_node_base && section_tree_node_base2._right == &section_tree_node_base, "New Section_tree_node_base, show its ._parent: ", section_tree_node_base2._parent, ", ._left: ", section_tree_node_base2._left,", ._right: ", section_tree_node_base2._right);
+    // _Section_tree_node_base section_tree_node_base;
+    // _Section_tree_node_base section_tree_node_base2(section_node_base_ptr, &section_tree_node_base, &section_tree_node_base);
+    // test(section_tree_node_base2._parent == section_node_base_ptr && section_tree_node_base2._left == &section_tree_node_base && section_tree_node_base2._right == &section_tree_node_base, "New Section_tree_node_base, show its ._parent: ", section_tree_node_base2._parent, ", ._left: ", section_tree_node_base2._left,", ._right: ", section_tree_node_base2._right);
     
     {
         _Section_node_header section_node_header;
@@ -82,6 +82,17 @@ int main() {
         test(h6._next == &h && h6._prev == &h && h._next == &h6 && h._prev == &h6, "Check whether section_node_header and section_node_header6 forms a circle, section_node_header's this: ", &h, ", ._prev: ", h._prev, ", ._next: ", h._next, ", section_node_header6's this: ", &h6, ", ._prev: ", h6._prev, ", ._next: ", h6._next);
 
         test(&h5 == h5._next && &h5 == h5._prev, "Check whether section_node_header5 is reconstructed by default. section_node_header5' this: ", &h5, ", ._prev: ", h5._prev, ", ._next: ", h5._next);
+    }
+    {
+        _Section_leaf_node<int, int> leaf_node;
+        test(true, "Testing _Section_leaf_node, new _Section_leaf_node.");
+
+        test(leaf_node._parent == nullptr, "Test whether successfully inherit from _Section_tree_node_base.");
+
+        auto pr(leaf_node._pair);
+        pr.first = 100;
+        pr.second = 101;
+        test(pr.first == 100 && pr.second == 101, "Test whether ._pair member works.");
     }
     {
         J::section::section<int, int> sec;

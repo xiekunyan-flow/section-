@@ -4,9 +4,9 @@
 
 namespace J{
     using namespace J::basic;
-    std::string _Section_node_base::print() {
-        return "_Section_node_base::print()";
-    }
+    // std::string _Section_node_base::print() {
+    //     return "_Section_node_base::print()";
+    // }
 }
 
 #endif

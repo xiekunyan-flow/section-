@@ -22,8 +22,8 @@ namespace section
         typedef _Compare	    			   key_compare;
         typedef _Alloc			    	       allocator_type;
     protected:
-        typedef _Section_node_base* 	    	_Base_ptr;
-        typedef const _Section_node_base*   	_Const_Base_ptr;
+        // typedef _Section_node_base* 	    	_Base_ptr;
+        // typedef const _Section_node_base*   	_Const_Base_ptr;
         typedef _Section_leaf_node_base*        _Leaf_node_ptr;
         typedef const _Section_leaf_node_base*  _Const_leaf_node_ptr;
         typedef _Section_tree_node_base*        _Tree_node_ptr;
