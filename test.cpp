@@ -46,29 +46,33 @@ int main() {
     success_parts = 0;
 
     testpart("Checking _Section_leaf_node_base");
-    // _Section_node_base section_node_base;
-    // test(nullptr == section_node_base._parent, "Define object _Section_node_base, with default constructor, get its parent: ", section_node_base._parent, "expected nullptr.");
+    {
+        _Section_leaf_node_base section_leaf_node_base;
+        auto& lb(section_leaf_node_base);
+        test(true, "New _Section_leaf_node_base section_leaf_node_base = _Section_leaf_node_base()");
 
-    // test(true, "Call function of _Section_node_base declared in section_node.h but defined in range_node.cc, with its output: ", section_node_base.print());
-    
-    _Section_leaf_node_base section_leaf_node_base;
-    // test(section_leaf_node_base._root == nullptr, "Define object _Section_leaf_node_base, with default constructor, get its parent: ", section_leaf_node_base._root, ", expected nullptr");
+        test(section_leaf_node_base._next == nullptr && section_leaf_node_base._prev == nullptr, "Verifying default constructor. Checkout whether section_leaf_node_base._next is nullptr: ", section_leaf_node_base._next, " ,expected nullptr;", " Checkout whether section_leaf_node_base._prev is nullptr: ", section_leaf_node_base._prev, " ,expected nullptr;");
 
-    test(section_leaf_node_base._next == nullptr && section_leaf_node_base._prev == nullptr, "Checkout whether section_leaf_node_base._next is nullptr: ", section_leaf_node_base._next, " ,expected nullptr;", " Checkout whether section_leaf_node_base._prev is nullptr: ", section_leaf_node_base._prev, " ,expected nullptr;");
+        _Section_leaf_node_base section_leaf_node_base2(&lb, &lb);
+        auto& lb2(section_leaf_node_base2);
+        test(true, "Construct Val by pointers to _Section_leaf_node_base: `_Section_leaf_node_base section_leaf_node_base2(&section_leaf_node_base, &section_leaf_node_base);`");
 
-    // section_node_base._parent = &section_leaf_node_base;
-    // test(section_node_base._parent == &section_leaf_node_base, "Let section_node_base._parent -> section_leaf_node_base, see their memory address. section_node_base._parent: ", section_node_base._parent, ", &section_leaf_node_base: ", &section_leaf_node_base);
+        test(lb2._next == &lb && lb2._prev == &lb, "Verifying construtor. section_leaf_node_base2._prev: ", lb2._prev, ", exptected ", &lb, ". ._next: ", lb2._next, ", exptected ", &lb);
+    }
+    testpart("Checking _Section_tree_node_base");
+    {
+        _Section_tree_node_base section_tree_node_base;
+        auto& tb(section_tree_node_base);
+        test(true, "New _Section_tree_node_base section_tree_node_base = _Section_tree_node_base()");
 
-    // _Section_node_base* section_node_base_ptr(&section_leaf_node_base);
-    // test(section_node_base_ptr == &section_leaf_node_base, "Define _Section_node_base_ptr, point to section_leaf_node_base.");
+        test(tb._left == nullptr && nullptr == tb._right && nullptr == tb._parent, "Verifying default constructor. section_tree_node_base._left: ", tb._left, ", expected nullptr. section_tree_node_base._right:", tb._right, ", expected nullptr. section_tree_node_base._parent: ", tb._parent, ", expected nullptr.");
 
-    // static_cast<_Section_leaf_node_base*>(section_node_base_ptr)->_next = &section_leaf_node_base;
-    // test(section_node_base_ptr == section_leaf_node_base._next, "static_cast the father node to child, modify ._next variable which father not have.");
+        _Section_tree_node_base section_tree_node_base2(&tb, &tb, &tb);
+        auto& tb2(section_tree_node_base2);
+        test(true, "Construct section_tree_node_base2 by pointers to ._Section_tree_node_base: `_Section_tree_node_base section_tree_node_base2(&tb, &tb, &tb);`");
 
-    // _Section_tree_node_base section_tree_node_base;
-    // _Section_tree_node_base section_tree_node_base2(section_node_base_ptr, &section_tree_node_base, &section_tree_node_base);
-    // test(section_tree_node_base2._parent == section_node_base_ptr && section_tree_node_base2._left == &section_tree_node_base && section_tree_node_base2._right == &section_tree_node_base, "New Section_tree_node_base, show its ._parent: ", section_tree_node_base2._parent, ", ._left: ", section_tree_node_base2._left,", ._right: ", section_tree_node_base2._right);
-    
+        test(tb2._parent == &tb && tb2._left == &tb && tb2._right == &tb, "Verifying consturctor. section_node_base2._parent: ", tb2._parent, ", expected ", &tb, ". ._left: ", tb2._left, ", expected ", &tb, ". ._right: ", tb2._right, ", expected: ", &tb);
+    }
     testpart("Checking _Section_node_header");
     {
         _Section_node_header section_node_header;
@@ -101,22 +105,39 @@ int main() {
 
         test(&h5 == h5._right && &h5 == h5._left, "Check whether section_node_header5 is reconstructed by default. section_node_header5' this: ", &h5, ", ._left: ", h5._left, ", ._right: ", h5._right);
     }
+    testpart("Checking _Section_leaf_node:");
     {
         _Section_leaf_node<int, int> leaf_node;
+        auto& ln(leaf_node);
         test(true, "Testing _Section_leaf_node, new _Section_leaf_node.");
 
-        test(leaf_node._parent == nullptr, "Test whether successfully inherit from _Section_tree_node_base.");
+        test(leaf_node._parent == nullptr && nullptr == leaf_node._left, nullptr == ln._right, "Test whether successfully default construct inherit from _Section_tree_node_base. leaf_node._parent: ", ln._parent, ", expected nullptr. leaf_node._left: ", ln._left, ", expected nullptr. .right: ", ln._right, ", expected nullptr." );
 
-        auto pr(leaf_node._pair);
+        test(nullptr == ln._prev && nullptr == leaf_node._next, "Test whether successfully default construct inherit from _Section_leaf_node_base. leaf_node._prev: ", ln._prev, ", expected nullptr. leaf_node._next: ", ln._next, ", expected nullptr.");
+
+        auto& pr(leaf_node._pair);
         pr.first = 100;
         pr.second = 101;
-        test(pr.first == 100 && pr.second == 101, "Test whether ._pair member works.");
+        test(ln._pair.first == 100 && ln._pair.second == 101, "Test whether ._pair member works.");
+
+        auto pr2(ln._valptr());
+        test(pr2->first == 100 && 101 == pr2->second, "Construct pr2 by leaf_node._valptr(), expected *pair<int, int> type. pr2->first = ", pr2->first, ", pr2->second = ", pr2->second, ", expected (100, 101).");
+
+        pr2->first = 200, pr2->second = 201;
+        test(200 == pr2->first && 201 == pr2->second, "Test whether pr2 isnot const, modify it and now, pr2->first = ", pr2->first, ", pr2->second = ", pr2->second, ", expected (200, 201).");
+
+        auto pr3(static_cast<const _Section_leaf_node<int, int> >(leaf_node)._valptr());
+        test(pr3->first == 200 && 201 == pr3->second, "Construct pr3 by static_cast<const ...>(leaf_node)._valptr(), expected pr3 as const pair<int, int>. pr3->first = ", pr3->first, ", pr3->second = ", pr3->second, ", expected (200, 201).");
+
+        // pr3->first = 300;
+        test(true, "pr3 is const, verifying.");
     }
+    testpart("Checking section");
     {
         J::section::section<int, int> sec;
         test(true, "New section<int, int> sec");
     }
-    testpart("STOP TEST");
+    testpart("STOP TEST");//mark stop test, essential.
 
 
     cout << "-----------------------" << endl;
@@ -139,8 +160,8 @@ void print(const Type& arg, const Types&... args)
 
 template<typename... Types>
 void test(bool judge, const Types&... args) {
-    cout << testmachine.head << testmachine.num << "=" << judge << " ";
-    fout << testmachine.head << testmachine.num << "=" << judge << " ";
+    cout << testmachine.head << testmachine.part << '.' << testmachine.num << "=" << judge << " ";
+    fout << testmachine.head << testmachine.part << '.' << testmachine.num << "=" << judge << " ";
     print(args...);
     cout << endl;
     fout << endl;
@@ -154,8 +175,8 @@ void testpart(string s) {
         fout << "} successed(" << testmachine.success << '/' << testmachine.num << "). ";
         if (testmachine.success == testmachine.num) {
             success_parts += 1;
-            cout << "Pass test.";
-            fout << "Pass test.";
+            cout << "Pass test "<< testmachine.head << testmachine.part << '.';
+            fout << "Pass test "<< testmachine.head << testmachine.part << '.';
         }
         else
             cout << "\n ! Not Pass Test, have " << -testmachine.success + testmachine.num << " bug(s).";

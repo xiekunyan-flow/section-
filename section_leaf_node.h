@@ -4,6 +4,12 @@
 
 namespace J{
     namespace leaf_node{
+
+        // _Section_leaf_node inherit from _Section_leaf_node_base 
+        // and _Section_tree_node_base
+        // _Section_leaf_node_base dont have templated data, while 
+        // _Section_leaf_node has
+        // The templated data stored in std::pair
         template<typename _Key, typename _Tp>
         class _Section_leaf_node : public _Section_leaf_node_base, public _Section_tree_node_base {
         public:
