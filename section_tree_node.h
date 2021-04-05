@@ -20,6 +20,13 @@ namespace J{
             //     bool _Is_leaf; //mark if its child is leaf
             //     value_type _M_field;
             //     mapped_type _M_marked;
+                _Key _mid_key;
+                _Key _right_key;
+                bool _has_mid;
+                bool _Is_leaf;
+                _Tp _sum;
+
+                _Section_tree_node<_Key, _Tp>() noexcept : _mid_key(_Key()), _right_key(_Key()), _has_mid(false), _Is_leaf(false), _sum(_Tp()) {}
             };
 
     }

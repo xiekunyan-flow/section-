@@ -38,9 +38,18 @@ J.4.6=1 Construct pr3 by static_cast<const ...>(leaf_node)._valptr(), expected p
 J.4.7=1 pr3 is const, verifying.
 } successed(8/8). Pass test J.4.
 
->> Start Test J.4 Checking section {
-J.5.0=1 New section<int, int> sec
-} successed(1/1). Pass test J.5.
+>> Start Test J.4 Checking _Section_tree_node {
+J.5.0=1 Testing default consturtor: `_Section_tree_node<int, int> section_tree_node;`
+J.5.1=1 Testing section_tree_node's ._mid: 0, expected 0. ._right: 0, expected 0
+J.5.2=1 Testing section_tree_node's ._has_mid: 0, expected false.
+J.5.3=1 Testing section_tree_node's ._Is_leaf: 0, expected false
+J.5.4=1 Testing section_tree_node's _sum: 0, expected 0.
+J.5.5=1 Testing section_tree_node successfully inherit from _Section_tree_node_base, show its _left: 0, expected nullptr. ._right: 0, exptected nullptr. ._parent: 0, expected nullptr.
+} successed(6/6). Pass test J.5.
+
+>> Start Test J.5 Checking section {
+J.6.0=1 New section<int, int> sec
+} successed(1/1). Pass test J.6.
 
 -----------------------
-End test section vessel, successed part(5/5)
+End test section vessel, successed part(6/6)

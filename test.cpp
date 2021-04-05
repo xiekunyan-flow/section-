@@ -132,10 +132,27 @@ int main() {
         // pr3->first = 300;
         test(true, "pr3 is const, verifying.");
     }
+    testpart("Checking _Section_tree_node");
+    {
+        _Section_tree_node<int, int> section_tree_node;
+        auto& tn(section_tree_node);
+        test(true, "Testing default consturtor: `_Section_tree_node<int, int> section_tree_node;`");
+
+        test(0 == tn._mid_key && 0 == tn._right_key, "Testing section_tree_node's ._mid: ", tn._mid_key, ", expected 0. ._right: ", tn._right, ", expected 0");
+
+        test(false == tn._has_mid, "Testing section_tree_node's ._has_mid: ", tn._has_mid, ", expected false.");
+
+        test(false == tn._Is_leaf, "Testing section_tree_node's ._Is_leaf: ", tn._Is_leaf, ", expected false");
+
+        test(0 == tn._sum, "Testing section_tree_node's _sum: ", tn._sum, ", expected 0.");
+
+        test(nullptr == tn._left && nullptr == tn._right && nullptr == tn._parent, "Testing section_tree_node successfully inherit from _Section_tree_node_base, show its _left: ", tn._left, ", expected nullptr. ._right: ", tn._right, ", exptected nullptr. ._parent: ", tn._parent, ", expected nullptr.");
+    }
     testpart("Checking section");
     {
         J::section::section<int, int> sec;
         test(true, "New section<int, int> sec");
+        
     }
     testpart("STOP TEST");//mark stop test, essential.
 
