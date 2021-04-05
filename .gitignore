@@ -1,4 +1,8 @@
-test.
+*
 
-.vscode/
-.json
+!*.c
+!*.cpp
+!*.cc
+!*.h
+!*.md
+!*.txt

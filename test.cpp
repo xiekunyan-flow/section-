@@ -12,7 +12,6 @@
 using namespace::std;
 using namespace::J;
 using namespace::J::basic;
-using namespace::J::section;
 
 struct Testmachine {
     string head;
@@ -150,9 +149,11 @@ int main() {
     }
     testpart("Checking section");
     {
-        J::section::section<int, int> sec;
+        section<int, int> sec;
         test(true, "New section<int, int> sec");
         
+        auto& h(sec._M_header);
+        test(nullptr == h._parent && &h == h._left && &h == h._right, "Checking sec's header.");
     }
     testpart("STOP TEST");//mark stop test, essential.
 

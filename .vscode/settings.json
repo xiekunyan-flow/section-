@@ -9,7 +9,8 @@
         "algorithm": "cpp",
         "string": "cpp",
         "memory": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "type_traits": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

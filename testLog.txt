@@ -49,7 +49,8 @@ J.5.5=1 Testing section_tree_node successfully inherit from _Section_tree_node_b
 
 >> Start Test J.5 Checking section {
 J.6.0=1 New section<int, int> sec
-} successed(1/1). Pass test J.6.
+J.6.1=1 Checking sec's header.
+} successed(2/2). Pass test J.6.
 
 -----------------------
 End test section vessel, successed part(6/6)

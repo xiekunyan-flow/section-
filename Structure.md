@@ -38,7 +38,32 @@ _Val _M_storage; //231行，可替换为
 7. F和J的空格多少貌似有歧义。
 8. typedef只放在tree里就行了吧，除了`_Link_type`, however, seems that `Link_type` doesnot used at all.
 9. 我的test工具
+10. 目前只支持add和sum
+11. 插入时若本来就有这个节点
+12. 家福为啥执意tree节点只保留一个数据呢
+13. 交换叶子节点和交换tree节点是不同的
+14. throw，比如insert时
 
 ## Notes
 
 1. &&不能处理const&, 处理&还需要move
+
+## Rb_tree
+
+1. `alloc_node`
+2. `construct_node`, `create_node`
+3. `insert_and_rebalance`目前找不到是怎么实现的，但我觉得能做
+4. _M_get_insert_unique_pos
+
+## Idea
+
+1. 新建插入的`_Section_leaf_node`节点a
+2. 寻找到插入位置（节点a应该的父亲p），若无，则新建根节点
+3. 
+   1. p只有一个孩子，那么直接插入，并且遍历push_up上面所有的节点，并结束
+   2. p有2个孩子，则swap，并更新push_up上一个节点p的维护信息
+4. 新建一个更上的节点b，连接a和b
+5. 向上一层，找到pp，
+   1. 如果不到头，重复3、4、5
+   2. 到头，新建根节点
+
