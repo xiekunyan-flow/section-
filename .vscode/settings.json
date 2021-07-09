@@ -12,5 +12,22 @@
         "ostream": "cpp",
         "type_traits": "cpp"
     },
-    "C_Cpp.errorSquiggles": "Disabled"
-}
+    "C_Cpp.errorSquiggles": "Disabled",
+    "todo-tree.highlights.defaultHighlight": {
+        "icon": "alert",
+        "type": "text",
+        "foreground": "white",
+        "background": "orange",
+        "opacity": 50,
+        "iconColour": "blue"
+    },
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {
+            "icon": "check",
+        },
+        "FIXME": {
+            "foreground": "black",
+            "iconColour": "yellow",
+            "gutterIcon": true
+        }
+    }}

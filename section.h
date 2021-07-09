@@ -81,46 +81,62 @@ namespace J
 
         // }
     public:
-        //  @brief  寻找到__Key应该对应的_Tree_node_ptr节点, if we 
-        //          want to insert __Key.
-        //  @param  __Key  key of the node to be inserted.
+        /**
+         * @brief  寻找到__Key应该对应的_Tree_node_ptr节点, if we 
+         *         want to insert __Key.
+         * @param  __Key  key of the node to be inserted.
+         */
         _Tree_node_ptr _get_insert_unique_pos(key_type __Key) {
+            //TODO
+            return _Tree_node_ptr();
+        }
+        /**
+         * @brief  在B+树插入时，让B+树长高一层，__node会连接在新root
+         *         上。
+         * @param  __node  inserted new branch connected to new root.
+         */
+        void _build_higher_root(_Tree_node_ptr __node) {
+            //TODO
+        }
+        /**
+         *  @brief  更新节点维护信息
+         *  @param  __node  需要更新的节点
+         */
+        void push_up(_Tree_node_ptr __node) {
+            //TODO
+        }
+        /**
+         *  @brief  交换两个叶子节点的信息
+         *  @param  __nodeA 需要交换的叶子节点
+         *  @param  __nodeB 需要交换的叶子节点
+         */
+        void swap(_Node_link_type __nodeA, _Node_link_type __nodeB) {
+            //TODO
+        } 
+        /**
+         *  @brief  交换两个非叶子节点的信息
+         *  @param  __nodeA 需要交换的非叶子节点
+         *  @param  __nodeB 需要交换的非叶子节点
+         */
+        void swap(_Tree_link_type __nodeA, _Tree_link_type __nodeB) {
+            //TODO
+        } 
+        /**
+         *  @brief  新增一个更高的节点，并返回它
+         *  @param  __node  The node who wants a higher node.
+         */
+        _Tree_node_ptr _build_higher_node(_Tree_node_ptr __node) {
+            //TODO
             return _Tree_node_ptr();
         }
 
-        //  @brief  在B+树插入时，让B+树长高一层，__node会连接在新root
-        //          上。
-        //  @param  __node  inserted new branch connected to new root.
-        void _build_higher_root(_Tree_node_ptr __node) {
-        }
-
-        //  @brief  更新节点维护信息
-        //  @param  __node  需要更新的节点
-        void push_up(_Tree_node_ptr __node) {
-        }
-
-        //  @brief  交换两个叶子节点的信息
-        //  @param  __nodeA 需要交换的叶子节点
-        //  @param  __nodeB 需要交换的叶子节点
-        void swap(_Node_link_type __nodeA, _Node_link_type __nodeB) {
-        } 
-        
-        //  @brief  交换两个非叶子节点的信息
-        //  @param  __nodeA 需要交换的非叶子节点
-        //  @param  __nodeB 需要交换的非叶子节点
-        void swap(_Tree_link_type __nodeA, _Tree_link_type __nodeB) {
-        } 
-
-        //  @brief  新增一个更高的节点，并返回它
-        //  @param  __node  The node who wants a higher node.
-        _Tree_node_ptr _build_higher_node(_Tree_node_ptr __node) {
-        }
-
     public:
-        //  @brief  插入节点
-        //  @param  __pair  插入的pair类型键值对
+        /**
+         *  @brief  插入节点
+         *  @param  __pair  插入的pair类型键值对
+         */
         void insert(mapped_type __pair) {
-            //TODO
+            //TODO: insert 
         }
     };
     //name implied
