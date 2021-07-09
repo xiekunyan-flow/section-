@@ -6,7 +6,8 @@
 #include <memory>
 namespace J
 {
-    //这里可能有bug,暴漏问题
+    //TODO 清理 namespace
+    //TODO 这里可能有bug,暴漏问题
     using namespace J::tree_node;
     using namespace J::leaf_node;
     template <typename _Key, typename _Tp, typename _Compare = std::less<_Key>,
@@ -39,6 +40,7 @@ namespace J
     private:
         std::allocator<_Leaf_node_type> _Leaf_node_allocator;
         std::allocator<_Tree_node_type> _Tree_node_allocator;
+        //TODO 清理这里的注释代码
         // 基础分配器
         // struct _Alloc_tree_node
         // {
@@ -87,7 +89,7 @@ namespace J
          * @param  __Key  key of the node to be inserted.
          */
         _Tree_node_ptr _get_insert_unique_pos(key_type __Key) {
-            //TODO
+            //TODO 这里主要是一个查询算法
             return _Tree_node_ptr();
         }
         /**
@@ -96,14 +98,14 @@ namespace J
          * @param  __node  inserted new branch connected to new root.
          */
         void _build_higher_root(_Tree_node_ptr __node) {
-            //TODO
+            //TODO 这里需要关注, 如果
         }
         /**
          *  @brief  更新节点维护信息
          *  @param  __node  需要更新的节点
          */
         void push_up(_Tree_node_ptr __node) {
-            //TODO
+            //TODO 这个函数是干什么的
         }
         /**
          *  @brief  交换两个叶子节点的信息
@@ -111,7 +113,7 @@ namespace J
          *  @param  __nodeB 需要交换的叶子节点
          */
         void swap(_Node_link_type __nodeA, _Node_link_type __nodeB) {
-            //TODO
+            //TODO 是不是不交换位置, 但交换值, 交换键值对吗
         } 
         /**
          *  @brief  交换两个非叶子节点的信息
@@ -136,9 +138,24 @@ namespace J
          *  @param  __pair  插入的pair类型键值对
          */
         void insert(mapped_type __pair) {
-            //TODO: insert 
+            /*TODO 待清理
+             * 我的计划是, 当树为空时分类讨论, 直接插入.
+             * 这个想法虽然可能欠考虑, 但可以快速看到效果
+             */
+            if (_M_header._size == 0 && _M_header._node_count == 0) {
+                key_type key(__pair.first);
+                auto value(__pair.second);
+
+                int a{0};
+
+            }
+            /*FIXME
+             * 插入过程: 找到插入位置, 平衡
+             * 勿忘: _M_header _node_count可能变化, 插入成功则 _size++
+             */
         }
     };
+    //TODO 待清理
     //name implied
     // template<typename _Key, typename _Val,
 	//    typename _Compare, typename _Alloc>

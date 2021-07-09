@@ -8,7 +8,6 @@
 #include "section.h"
 #include <fstream>
 #include <bitset>
-
 using namespace::std;
 using namespace::J;
 using namespace::J::basic;
@@ -28,7 +27,7 @@ ofstream fout;
 template<typename... Types>
 void test(bool __judgement, const Types&... __prints);
 
-// @brief Devide test to parts.
+// @brief Divide test to parts.
 void testpart(string testpart);
 
 int main() {
@@ -56,7 +55,7 @@ int main() {
         auto& lb2(section_leaf_node_base2);
         test(true, "Construct Val by pointers to _Section_leaf_node_base: `_Section_leaf_node_base section_leaf_node_base2(&section_leaf_node_base, &section_leaf_node_base);`");
 
-        test(lb2._next == &lb && lb2._prev == &lb, "Verifying construtor. section_leaf_node_base2._prev: ", lb2._prev, ", exptected ", &lb, ". ._next: ", lb2._next, ", exptected ", &lb);
+        test(lb2._next == &lb && lb2._prev == &lb, "Verifying constructor. section_leaf_node_base2._prev: ", lb2._prev, ", expected ", &lb, ". ._next: ", lb2._next, ", expected ", &lb);
     }
     testpart("Checking _Section_tree_node_base");
     {
@@ -70,7 +69,7 @@ int main() {
         auto& tb2(section_tree_node_base2);
         test(true, "Construct section_tree_node_base2 by pointers to ._Section_tree_node_base: `_Section_tree_node_base section_tree_node_base2(&tb, &tb, &tb);`");
 
-        test(tb2._parent == &tb && tb2._left == &tb && tb2._right == &tb, "Verifying consturctor. section_node_base2._parent: ", tb2._parent, ", expected ", &tb, ". ._left: ", tb2._left, ", expected ", &tb, ". ._right: ", tb2._right, ", expected: ", &tb);
+        test(tb2._parent == &tb && tb2._left == &tb && tb2._right == &tb, "Verifying constructor. section_node_base2._parent: ", tb2._parent, ", expected ", &tb, ". ._left: ", tb2._left, ", expected ", &tb, ". ._right: ", tb2._right, ", expected: ", &tb);
     }
     testpart("Checking _Section_node_header");
     {
@@ -82,13 +81,13 @@ int main() {
 
         _Section_node_header section_node_header2(std::move(section_node_header));
         auto& h2 = section_node_header2;
-        test(true, "New _Section_node_header section_node_header2 consturcted by section_node_header.");
+        test(true, "New _Section_node_header section_node_header2 constructed by section_node_header.");
 
         test(h2._left == &h2 && h2._right == &h2, "Checkout whether section_node_header2's ._left: ", h2._left, ", ._right: ", h2._right, ", this: ", &h2, ", expected equal.");
 
         // const _Section_node_header& section_node_header3 = _Section_node_header();
         // _Section_node_header section_node_header4(std::move(section_node_header3));
-        test(true, "New _Section_node_header section_node_header4 cannot consturcted by const section_node_header&.");
+        test(true, "New _Section_node_header section_node_header4 cannot constructed by const section_node_header&.");
 
         _Section_node_header section_node_header5;
         auto& h5(section_node_header5);
@@ -123,7 +122,7 @@ int main() {
         test(pr2->first == 100 && 101 == pr2->second, "Construct pr2 by leaf_node._valptr(), expected *pair<int, int> type. pr2->first = ", pr2->first, ", pr2->second = ", pr2->second, ", expected (100, 101).");
 
         pr2->first = 200, pr2->second = 201;
-        test(200 == pr2->first && 201 == pr2->second, "Test whether pr2 isnot const, modify it and now, pr2->first = ", pr2->first, ", pr2->second = ", pr2->second, ", expected (200, 201).");
+        test(200 == pr2->first && 201 == pr2->second, "Test whether pr2 isn't const, modify it and now, pr2->first = ", pr2->first, ", pr2->second = ", pr2->second, ", expected (200, 201).");
 
         auto pr3(static_cast<const _Section_leaf_node<int, int> >(leaf_node)._valptr());
         test(pr3->first == 200 && 201 == pr3->second, "Construct pr3 by static_cast<const ...>(leaf_node)._valptr(), expected pr3 as const pair<int, int>. pr3->first = ", pr3->first, ", pr3->second = ", pr3->second, ", expected (200, 201).");
@@ -135,7 +134,7 @@ int main() {
     {
         _Section_tree_node<int, int> section_tree_node;
         auto& tn(section_tree_node);
-        test(true, "Testing default consturtor: `_Section_tree_node<int, int> section_tree_node;`");
+        test(true, "Testing default constructor: `_Section_tree_node<int, int> section_tree_node;`");
 
         test(0 == tn._mid_key && 0 == tn._right_key, "Testing section_tree_node's ._mid: ", tn._mid_key, ", expected 0. ._right: ", tn._right, ", expected 0");
 
@@ -145,23 +144,27 @@ int main() {
 
         test(0 == tn._sum, "Testing section_tree_node's _sum: ", tn._sum, ", expected 0.");
 
-        test(nullptr == tn._left && nullptr == tn._right && nullptr == tn._parent, "Testing section_tree_node successfully inherit from _Section_tree_node_base, show its _left: ", tn._left, ", expected nullptr. ._right: ", tn._right, ", exptected nullptr. ._parent: ", tn._parent, ", expected nullptr.");
+        test(nullptr == tn._left && nullptr == tn._right && nullptr == tn._parent, "Testing section_tree_node successfully inherit from _Section_tree_node_base, show its _left: ", tn._left, ", expected nullptr. ._right: ", tn._right, ", expected nullptr. ._parent: ", tn._parent, ", expected nullptr.");
     }
     testpart("Checking section");
     {
-        section<int, int> sec;
-        test(true, "New section<int, int> sec");
+        section<int, pair<int, int> > sec;
+        test(true, "New section<int, pair<int, int> > sec");
         
         auto& h(sec._M_header);
         test(nullptr == h._parent && &h == h._left && &h == h._right, "Checking sec's header.");
+
+        pair<int, int> pair1{1, 2};
+        sec.insert(pair1);
+        test(true, "Insert a pair, expected no error");
     }
     testpart("STOP TEST");//mark stop test, essential.
 
 
     cout << "-----------------------" << endl;
-    cout << "End test section vessel, successed part("<<  success_parts << "/" << parts << ")" << endl;
+    cout << "End test section vessel, succeeded part("<<  success_parts << "/" << parts << ")" << endl;
     fout << "-----------------------" << endl;
-    fout << "End test section vessel, successed part("<<  success_parts << "/" << parts << ")" << endl;
+    fout << "End test section vessel, succeeded part("<<  success_parts << "/" << parts << ")" << endl;
     fout.close();
     return 0;
 }
@@ -189,8 +192,8 @@ void test(bool judge, const Types&... args) {
 
 void testpart(string s) {
     if (testmachine.part != 0) {
-        cout << "} successed(" << testmachine.success << '/' << testmachine.num << "). ";
-        fout << "} successed(" << testmachine.success << '/' << testmachine.num << "). ";
+        cout << "} succeeded(" << testmachine.success << '/' << testmachine.num << "). ";
+        fout << "} succeeded(" << testmachine.success << '/' << testmachine.num << "). ";
         if (testmachine.success == testmachine.num) {
             success_parts += 1;
             cout << "Pass test "<< testmachine.head << testmachine.part << '.';
