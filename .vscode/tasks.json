@@ -3,8 +3,8 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
-			"label": "C/C++: g++-11 生成活动文件",
-			"command": "/usr/local/bin/g++-11",
+			"label": "C/C++: g++-9 build active file",
+			"command": "/usr/bin/g++-9",
 			"args": [
 				"-g",
 				"${workspaceFolder}/*.cc",
@@ -19,7 +19,7 @@
 				"$gcc"
 			],
 			"group": "build",
-			"detail": "编译器: /usr/local/bin/g++-11"
+			"detail": "编译器: /usr/bin/g++-9"
 		}
 	]
 }
