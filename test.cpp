@@ -148,15 +148,14 @@ int main() {
     }
     testpart("Checking section");
     {
-        section<int, pair<int, int> > sec;
+        section<int, int> sec;
         test(true, "New section<int, pair<int, int> > sec");
         
         auto& h(sec._M_header);
         test(nullptr == h._parent && &h == h._left && &h == h._right, "Checking sec's header.");
 
-        pair<int, int> pair1{1, 2};
-        sec.insert(pair1);
-        test(true, "Insert a pair, expected no error");
+        sec.insert(1, 2);
+        test(true, "Insert key and value, expected no error");
     }
     testpart("STOP TEST");//mark stop test, essential.
 

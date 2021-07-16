@@ -31,8 +31,8 @@ namespace J
         typedef const _Section_tree_node<key_type,mapped_type>*	    _Const_tree_Link_type;
         typedef _Section_tree_node<key_type,mapped_type>            _Tree_node_type;
         typedef const _Section_tree_node<key_type,mapped_type>      _Const_tree_node_type;
-        typedef _Section_leaf_node<key_type,mapped_type>*           _Node_link_type;
-        typedef const _Section_leaf_node<key_type,mapped_type>*     _Const_node_link_type;
+        typedef _Section_leaf_node<key_type,mapped_type>*           _Leaf_link_type;
+        typedef const _Section_leaf_node<key_type,mapped_type>*     _Const_leaf_link_type;
         typedef _Section_leaf_node<key_type,mapped_type>            _Leaf_node_type;
         typedef const _Section_leaf_node<key_type,mapped_type>      _Const_leaf_node_type;
     public:
@@ -98,7 +98,7 @@ namespace J
          * @param  __node  inserted new branch connected to new root.
          */
         void _build_higher_root(_Tree_node_ptr __node) {
-            //TODO 这里需要关注, 如果
+            //TODO 这里需要关注, 
         }
         /**
          *  @brief  更新节点维护信息
@@ -112,7 +112,7 @@ namespace J
          *  @param  __nodeA 需要交换的叶子节点
          *  @param  __nodeB 需要交换的叶子节点
          */
-        void swap(_Node_link_type __nodeA, _Node_link_type __nodeB) {
+        void swap(_Leaf_link_type __nodeA, _Leaf_link_type __nodeB) {
             //TODO 是不是不交换位置, 但交换值, 交换键值对吗
         } 
         /**
@@ -135,19 +135,19 @@ namespace J
     public:
         /**
          *  @brief  插入节点
-         *  @param  __pair  插入的pair类型键值对
+         *  @param  __value  插入的值
+         *  @param  __key  插入的键
          */
-        void insert(mapped_type __pair) {
+        void insert(key_type __key, mapped_type __value) {
             /*TODO 待清理
              * 我的计划是, 当树为空时分类讨论, 直接插入.
              * 这个想法虽然可能欠考虑, 但可以快速看到效果
              */
             if (_M_header._size == 0 && _M_header._node_count == 0) {
-                key_type key(__pair.first);
-                auto value(__pair.second);
-
+                std::cout << __key << ' ' << __value << std::endl;
                 int a{0};
-
+                _Tree_link_type new_tree_node = new _Tree_node_type(__key, __value);
+                _Leaf_link_type new_link_node = new _Leaf_node_type(__key, __value);
             }
             /*FIXME
              * 插入过程: 找到插入位置, 平衡

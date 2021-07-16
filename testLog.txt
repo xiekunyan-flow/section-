@@ -16,15 +16,15 @@ J.2.3=1 Verifying constructor. section_node_base2._parent: 0x7ffeefbff790, expec
 } succeeded(4/4). Pass test J.2.
 
 >> Start Test J.2 Checking _Section_node_header {
-J.3.0=1 New _Section_node_header, show its ._parent: 0, ._right: 0x7ffeefbff6a0, ._left: 0x7ffeefbff6a0
+J.3.0=1 New _Section_node_header, show its ._parent: 0, ._right: 0x7ffeefbff6b0, ._left: 0x7ffeefbff6b0
 J.3.1=1 Verify section_node_header's ._size: 0, .node_count: 0, both expected 0
 J.3.2=1 New _Section_node_header section_node_header2 constructed by section_node_header.
-J.3.3=1 Checkout whether section_node_header2's ._left: 0x7ffeefbff6d0, ._right: 0x7ffeefbff6d0, this: 0x7ffeefbff6d0, expected equal.
+J.3.3=1 Checkout whether section_node_header2's ._left: 0x7ffeefbff6e0, ._right: 0x7ffeefbff6e0, this: 0x7ffeefbff6e0, expected equal.
 J.3.4=1 New _Section_node_header section_node_header4 cannot constructed by const section_node_header&.
 J.3.5=1 New _Section_node_header section_node_header5 connected section_node_header forming a circle.
 J.3.6=1 New _Section_node_header section_node_header6 constructed by section_node_header5.
-J.3.7=1 Check whether section_node_header and section_node_header6 forms a circle, section_node_header's this: 0x7ffeefbff6a0, ._left: 0x7ffeefbff730, ._right: 0x7ffeefbff730, section_node_header6's this: 0x7ffeefbff730, ._left: 0x7ffeefbff6a0, ._right: 0x7ffeefbff6a0
-J.3.8=1 Check whether section_node_header5 is reconstructed by default. section_node_header5' this: 0x7ffeefbff700, ._left: 0x7ffeefbff700, ._right: 0x7ffeefbff700
+J.3.7=1 Check whether section_node_header and section_node_header6 forms a circle, section_node_header's this: 0x7ffeefbff6b0, ._left: 0x7ffeefbff740, ._right: 0x7ffeefbff740, section_node_header6's this: 0x7ffeefbff740, ._left: 0x7ffeefbff6b0, ._right: 0x7ffeefbff6b0
+J.3.8=1 Check whether section_node_header5 is reconstructed by default. section_node_header5' this: 0x7ffeefbff710, ._left: 0x7ffeefbff710, ._right: 0x7ffeefbff710
 } succeeded(9/9). Pass test J.3.
 
 >> Start Test J.3 Checking _Section_leaf_node: {
@@ -50,7 +50,7 @@ J.5.5=1 Testing section_tree_node successfully inherit from _Section_tree_node_b
 >> Start Test J.5 Checking section {
 J.6.0=1 New section<int, pair<int, int> > sec
 J.6.1=1 Checking sec's header.
-J.6.2=1 Insert a pair, expected no error
+J.6.2=1 Insert key and value, expected no error
 } succeeded(3/3). Pass test J.6.
 
 -----------------------

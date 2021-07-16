@@ -17,6 +17,7 @@ namespace J{
             typedef _Section_leaf_node<_Key, _Tp>* _Link_type;
             typedef std::pair<_Key, _Tp> _Val;
             _Section_leaf_node() noexcept : _pair(std::pair<_Key, _Tp>()) { }
+            _Section_leaf_node(_Key __key, _Tp __value) :  _Section_leaf_node_base(), _Section_tree_node_base(), _pair(_Val(__key, __value)){}
             _Val* _valptr() { return &_pair; }
 
             const _Val* _valptr() const { return static_cast<const _Val*>(&_pair); }
