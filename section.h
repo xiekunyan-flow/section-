@@ -147,7 +147,19 @@ namespace J
                 std::cout << __key << ' ' << __value << std::endl;
                 int a{0};
                 _Tree_link_type new_tree_node = new _Tree_node_type(__key, __value);
-                _Leaf_link_type new_link_node = new _Leaf_node_type(__key, __value);
+                _Leaf_link_type new_leaf_node = new _Leaf_node_type(__key, __value);
+
+                _M_header._parent = new_tree_node;
+                new_tree_node->_parent = &_M_header;
+
+                new_tree_node->_right = new_leaf_node;
+                new_leaf_node->_parent = new_tree_node;
+
+                _M_header._prev = new_leaf_node;
+                new_leaf_node->_next = &_M_header;
+
+                _M_header._next = new_leaf_node;
+                new_leaf_node->_prev = &_M_header;
             }
             /*FIXME
              * 插入过程: 找到插入位置, 平衡

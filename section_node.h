@@ -60,7 +60,7 @@ namespace J{
         // Also has member _node_count, keeps track of number of 
         // nodes in tree.
         // Has member _size, keeps track of number of leaf nodes.
-        class _Section_node_header : public _Section_tree_node_base {
+        class _Section_node_header : public _Section_tree_node_base, public _Section_leaf_node_base {
         public:
             std::size_t _node_count; // Keeps track of number of nodes in tree.
             std::size_t _size; // Number of leaf nodes.
@@ -69,7 +69,10 @@ namespace J{
                 _left = this;
                 _right = this;
                 _parent = nullptr;
+                _next = nullptr;
+                _prev = nullptr;
             }
+            //FIXME _next and _prev
             _Section_node_header(_Section_node_header&& __x) : _Section_tree_node_base{__x._parent, __x._left, __x._right}, _node_count(__x._node_count), _size(__x._size) {
                 if (__x._right == &__x) 
                     _right = _left = this;
