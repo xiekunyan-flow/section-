@@ -6,8 +6,6 @@
 #include <memory>
 namespace J
 {
-    //TODO 清理 namespace
-    //TODO 这里可能有bug,暴漏问题
     using namespace J::tree_node;
     using namespace J::leaf_node;
     template <typename _Key, typename _Tp, typename _Compare = std::less<_Key>,
@@ -82,15 +80,23 @@ namespace J
         //     typedef pair<_Base_ptr, _Base_ptr> _Res;
 
         // }
-    public:
+    private:
         /**
          * @brief  寻找到__Key应该对应的_Tree_node_ptr节点, if we 
          *         want to insert __Key.
          * @param  __Key  key of the node to be inserted.
          */
-        _Tree_node_ptr _get_insert_unique_pos(key_type __Key) {
+        _Tree_link_type _get_insert_unique_pos(key_type __Key) {
             //TODO 这里主要是一个查询算法
-            return _Tree_node_ptr();
+            //确保这里树不为空了已经了
+            _Tree_node_ptr tl(_M_header._parent);
+            for (; tl->_left != nullptr || tl->_right != nullptr;) {
+                _Tree_link_type tlc(static_cast<_Tree_link_type>(tl));
+                if (!tlc->_has_mid || __Key > tlc->_mid_key) 
+                    tl = tl->_right;
+                else tl = tl->_left;
+            }
+            return static_cast<_Tree_link_type>(tl->_parent);
         }
         /**
          * @brief  在B+树插入时，让B+树长高一层，__node会连接在新root
@@ -104,8 +110,8 @@ namespace J
          *  @brief  更新节点维护信息
          *  @param  __node  需要更新的节点
          */
-        void push_up(_Tree_node_ptr __node) {
-            //TODO 这个函数是干什么的
+        void push_up(_Tree_link_type __node) {
+            __node->_sum = 0;
         }
         /**
          *  @brief  交换两个叶子节点的信息
@@ -113,7 +119,10 @@ namespace J
          *  @param  __nodeB 需要交换的叶子节点
          */
         void swap(_Leaf_link_type __nodeA, _Leaf_link_type __nodeB) {
-            //TODO 是不是不交换位置, 但交换值, 交换键值对吗
+            //不交换位置, 交换值
+            const auto& pr(__nodeA->val());
+            __nodeA->val() = __nodeB->val();
+            __nodeB->val() = pr;
         } 
         /**
          *  @brief  交换两个非叶子节点的信息
@@ -143,17 +152,21 @@ namespace J
              * 我的计划是, 当树为空时分类讨论, 直接插入.
              * 这个想法虽然可能欠考虑, 但可以快速看到效果
              */
+            //Step 1: 新建插入的`_Section_leaf_node`节点a
+            _Leaf_link_type new_leaf_node = new _Leaf_node_type(__key, __value);
+            _Leaf_link_type& a(new_leaf_node);
+            //Step 1.2 : 如果线段树为空直接搞
+            //TODO 修复
             if (_M_header._size == 0 && _M_header._node_count == 0) {
                 std::cout << __key << ' ' << __value << std::endl;
                 int a{0};
                 _Tree_link_type new_tree_node = new _Tree_node_type(__key, __value);
-                _Leaf_link_type new_leaf_node = new _Leaf_node_type(__key, __value);
-
-                _M_header._parent = new_tree_node;
-                new_tree_node->_parent = &_M_header;
 
                 new_tree_node->_right = new_leaf_node;
                 new_leaf_node->_parent = new_tree_node;
+
+                _M_header._parent = new_tree_node;
+                new_tree_node->_parent = &_M_header;
 
                 _M_header._prev = new_leaf_node;
                 new_leaf_node->_next = &_M_header;
@@ -165,8 +178,21 @@ namespace J
              * 插入过程: 找到插入位置, 平衡
              * 勿忘: _M_header _node_count可能变化, 插入成功则 _size++
              */
+            //Step 2 : 寻找到插入位置
+            _Tree_link_type p(_get_insert_unique_pos(__key));
+            _Leaf_link_type p2(static_cast<_Leaf_link_type>(p->_right));
+            if (!p->_has_mid) { //p只有一个孩子
+                if (__key == p2->key())
+                    return;
+                else if (__key > p2->key()) {
+                    swap(p2, a);
+                }
+                a->_parent = p;
+                p->_left = a;
+            }
         }
     };
+    
     //TODO 待清理
     //name implied
     // template<typename _Key, typename _Val,
@@ -209,6 +235,7 @@ namespace J
 	//     __throw_exception_again;
 	//   }
     //   }
+    }
     
-}
+
 #endif // SECTION_H_INCLUDED
