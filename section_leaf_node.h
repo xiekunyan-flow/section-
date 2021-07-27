@@ -19,6 +19,7 @@ namespace J{
             std::pair<_Key, _Tp> _pair;
         public:
             typedef _Section_leaf_node<_Key, _Tp>* _Leaf_link_type;
+            typedef _Section_tree_node<_Key, _Tp>* _Tree_link_type;
             //TODO 其实这里val可以改个名
             typedef std::pair<_Key, _Tp> _Pair;
             _Section_leaf_node() noexcept : _pair(std::pair<_Key, _Tp>()) { }
@@ -36,6 +37,15 @@ namespace J{
 
             _Pair& pair() {
                 return _pair;
+            }
+
+            virtual void swap(const _Tree_link_type& __L) {
+                _Section_tree_node<_Key, _Tp>::swap(__L);
+                //此时还差pair没有变
+                const _Leaf_link_type& tl(static_cast<_Leaf_link_type>(__L));
+                const _Pair& tp(tl->_pair);
+                tl->_pair = _pair;
+                _pair = tp;
             }
 
         };

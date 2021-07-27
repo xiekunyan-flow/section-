@@ -119,8 +119,8 @@ namespace J
          *  @param  __nodeA 需要交换的叶子节点
          *  @param  __nodeB 需要交换的叶子节点
          */
-        void swap(_Leaf_link_type __nodeA, _Leaf_link_type __nodeB) {
-            //不交换位置, 交换值
+        void swap(_Leaf_link_type& __nodeA, _Leaf_link_type& __nodeB) {
+            //先交换两个
             //TODO 消灭
             const auto& pr(__nodeA->pair());
             __nodeA->pair() = __nodeB->pair();
@@ -132,7 +132,7 @@ namespace J
          *  @param  __nodeA 需要交换的非叶子节点
          *  @param  __nodeB 需要交换的非叶子节点
          */
-        void swap(_Tree_link_type __nodeA, _Tree_link_type __nodeB) {
+        void swap(_Tree_link_type& __nodeA, _Tree_link_type& __nodeB) {
             std::cout << "Tree link exchanged" << std::endl;
             
         } 
@@ -189,7 +189,7 @@ namespace J
             //Step 2 : 寻找到插入位置
             _Tree_link_type p(_get_insert_unique_pos(__key));
             _Leaf_link_type p2(static_cast<_Leaf_link_type>(p->_right));
-            insert_atop(a, p);
+            a->insert_topasa(p);
 
             // _Leaf_link_type r1(
             a->_prev = p2;
@@ -207,7 +207,7 @@ namespace J
          * @param p 
          * @return _Tree_link_type 若为nullptr，则说明不需进一步插入
          */
-        _Tree_link_type insert_atop(_Tree_link_type a, _Tree_link_type p) {
+        _Tree_link_type insert_atop(_Tree_link_type& a, _Tree_link_type& p) {
             _Tree_link_type p2(static_cast<_Tree_link_type>(p->_right));
             auto __key(a->right_key());
             if (!p->_has_mid) { //p只有一个孩子
@@ -218,8 +218,8 @@ namespace J
                 }
                 a->_parent = p;
                 p->_left = a;
-                for(; static_cast<_Tree_node_ptr>(p) != &_M_header; p = static_cast<_Tree_link_type>(p->_parent))
-                    p->maintance();
+                for(auto pc(p); pc != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
+                    pc->maintance();
                 _M_header._node_count++;
                 _M_header._size++;
                 return nullptr;
@@ -228,24 +228,7 @@ namespace J
             return nullptr;
         }
         _Tree_link_type insert_atop(_Leaf_link_type a, _Tree_link_type p) {
-            std::cout << "insert leaf 0727" << std::endl;
-            _Tree_link_type p2(static_cast<_Tree_link_type>(p->_right));
-            auto __key(a->right_key());
-            if (!p->_has_mid) { //p只有一个孩子
-                if (__key == p2->right_key())
-                    return nullptr;
-                else if (__key > p2->right_key()) {
-                    a->swap(p2);
-                }
-                a->_parent = p;
-                p->_left = a;
-                for(; static_cast<_Tree_node_ptr>(p) != &_M_header; p = static_cast<_Tree_link_type>(p->_parent))
-                    p->maintance();
-                _M_header._node_count++;
-                _M_header._size++;
-                return nullptr;
-            }
-
+            //TODO 别忘记复制粘贴
             return nullptr;
         }
     };
