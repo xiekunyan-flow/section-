@@ -21,16 +21,35 @@ namespace J{
             //     value_type _M_field;
             //     mapped_type _M_marked;
 
+                typedef _Section_tree_node<_Key, _Tp>* _Tree_link_type;
             
-                _Key _mid_key;  //TODO 家福确认一下这里是不是等于左子树的最大值
-                _Key _right_key; //TODO 家福确认一下这里是不是等于右子树的最大值(全部儿子的最大值)
+                _Key _right_key;
                 bool _has_mid;
                 bool _Is_leaf;
                 _Tp _sum; //当前版本只能求和
 
-                _Section_tree_node<_Key, _Tp>() noexcept : _mid_key(_Key()), _right_key(_Key()), _has_mid(false), _Is_leaf(false), _sum(_Tp()) {}
+                _Section_tree_node<_Key, _Tp>() noexcept : _right_key(_Key()), _has_mid(false), _Is_leaf(false), _sum(_Tp()) {}
 
-                _Section_tree_node<_Key, _Tp>(_Key __right_key, _Tp __sum) noexcept : _mid_key(_Key()), _right_key(__right_key), _has_mid(false), _Is_leaf(false), _sum(__sum) {}
+                _Section_tree_node<_Key, _Tp>(_Key __right_key, _Tp __sum) noexcept :  _right_key(__right_key), _has_mid(false), _Is_leaf(false), _sum(__sum) {}
+
+                void maintance() {
+                    auto r(static_cast<_Section_tree_node<_Key, _Tp>*>(_right));
+                    _sum = r->_sum;
+                    _right_key = r->_right_key;
+
+                    if (_left != nullptr) {
+                        auto l(static_cast<_Section_tree_node<_Key, _Tp>*>(_left));
+                        _sum += l->_sum;
+                    }
+                }
+
+                const _Key& right_key() {
+                    return _right_key;
+                }
+                virtual void swap(const _Tree_link_type& __L) {
+                    _left = __L->_left;
+                }
+
             };
 
     }

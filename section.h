@@ -4,6 +4,7 @@
 #include "section_leaf_node.h"
 #include <bits/move.h>
 #include <memory>
+#include <iostream>
 namespace J
 {
     using namespace J::tree_node;
@@ -92,7 +93,7 @@ namespace J
             _Tree_node_ptr tl(_M_header._parent);
             for (; tl->_left != nullptr || tl->_right != nullptr;) {
                 _Tree_link_type tlc(static_cast<_Tree_link_type>(tl));
-                if (!tlc->_has_mid || __Key > tlc->_mid_key) 
+                if (!tlc->_has_mid || __Key > static_cast<_Tree_link_type>(tlc->_left)->right_key()) 
                     tl = tl->_right;
                 else tl = tl->_left;
             }
@@ -120,9 +121,11 @@ namespace J
          */
         void swap(_Leaf_link_type __nodeA, _Leaf_link_type __nodeB) {
             //不交换位置, 交换值
-            const auto& pr(__nodeA->val());
-            __nodeA->val() = __nodeB->val();
-            __nodeB->val() = pr;
+            //TODO 消灭
+            const auto& pr(__nodeA->pair());
+            __nodeA->pair() = __nodeB->pair();
+            __nodeB->pair() = pr;
+            std::cout << "Leaf link exchanged" << std::endl;
         } 
         /**
          *  @brief  交换两个非叶子节点的信息
@@ -130,7 +133,8 @@ namespace J
          *  @param  __nodeB 需要交换的非叶子节点
          */
         void swap(_Tree_link_type __nodeA, _Tree_link_type __nodeB) {
-            //TODO
+            std::cout << "Tree link exchanged" << std::endl;
+            
         } 
         /**
          *  @brief  新增一个更高的节点，并返回它
@@ -173,6 +177,10 @@ namespace J
 
                 _M_header._next = new_leaf_node;
                 new_leaf_node->_prev = &_M_header;
+
+                _M_header._node_count = 2;
+                _M_header._size = 1;
+                return;
             }
             /*FIXME
              * 插入过程: 找到插入位置, 平衡
@@ -181,15 +189,64 @@ namespace J
             //Step 2 : 寻找到插入位置
             _Tree_link_type p(_get_insert_unique_pos(__key));
             _Leaf_link_type p2(static_cast<_Leaf_link_type>(p->_right));
+            insert_atop(a, p);
+
+            // _Leaf_link_type r1(
+            a->_prev = p2;
+            a->_next = p2->_next;
+            a->_next->_prev = a;
+            p2->_next = a;
+
+            std::cout << "node_count : " << _M_header._node_count << "; size : " << _M_header._size << std::endl;
+        }
+    private:
+        /**
+         * @brief 
+         * 
+         * @param a 
+         * @param p 
+         * @return _Tree_link_type 若为nullptr，则说明不需进一步插入
+         */
+        _Tree_link_type insert_atop(_Tree_link_type a, _Tree_link_type p) {
+            _Tree_link_type p2(static_cast<_Tree_link_type>(p->_right));
+            auto __key(a->right_key());
             if (!p->_has_mid) { //p只有一个孩子
-                if (__key == p2->key())
-                    return;
-                else if (__key > p2->key()) {
-                    swap(p2, a);
+                if (__key == p2->right_key())
+                    return nullptr;
+                else if (__key > p2->right_key()) {
+                    a->swap(p2);
                 }
                 a->_parent = p;
                 p->_left = a;
+                for(; static_cast<_Tree_node_ptr>(p) != &_M_header; p = static_cast<_Tree_link_type>(p->_parent))
+                    p->maintance();
+                _M_header._node_count++;
+                _M_header._size++;
+                return nullptr;
             }
+
+            return nullptr;
+        }
+        _Tree_link_type insert_atop(_Leaf_link_type a, _Tree_link_type p) {
+            std::cout << "insert leaf 0727" << std::endl;
+            _Tree_link_type p2(static_cast<_Tree_link_type>(p->_right));
+            auto __key(a->right_key());
+            if (!p->_has_mid) { //p只有一个孩子
+                if (__key == p2->right_key())
+                    return nullptr;
+                else if (__key > p2->right_key()) {
+                    a->swap(p2);
+                }
+                a->_parent = p;
+                p->_left = a;
+                for(; static_cast<_Tree_node_ptr>(p) != &_M_header; p = static_cast<_Tree_link_type>(p->_parent))
+                    p->maintance();
+                _M_header._node_count++;
+                _M_header._size++;
+                return nullptr;
+            }
+
+            return nullptr;
         }
     };
     

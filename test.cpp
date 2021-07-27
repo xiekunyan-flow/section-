@@ -136,7 +136,7 @@ int main() {
         auto& tn(section_tree_node);
         test(true, "Testing default constructor: `_Section_tree_node<int, int> section_tree_node;`");
 
-        test(0 == tn._mid_key && 0 == tn._right_key, "Testing section_tree_node's ._mid: ", tn._mid_key, ", expected 0. ._right: ", tn._right, ", expected 0");
+        test(0 == tn._right_key, "Testing section_tree_node's_right: ", tn._right, ", expected 0");
 
         test(false == tn._has_mid, "Testing section_tree_node's ._has_mid: ", tn._has_mid, ", expected false.");
 
@@ -156,6 +156,9 @@ int main() {
 
         sec.insert(1, 2);
         test(true, "Insert key and value, expected no error");
+
+        sec.insert(2, 3);
+        test(true, "ok");
     }
     testpart("STOP TEST");//mark stop test, essential.
 
