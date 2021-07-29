@@ -33,7 +33,7 @@ namespace J{
 
                 _Section_tree_node<_Key, _Tp>(_Key __right_key, _Tp __sum) noexcept :  _right_key(__right_key), _has_mid(false), _Is_leaf(false), _sum(__sum) {}
 
-                void maintance() {
+                void maintence() {
                     auto r(static_cast<_Section_tree_node<_Key, _Tp>*>(_right));
                     _sum = r->_sum;
                     _right_key = r->_right_key;
@@ -53,7 +53,12 @@ namespace J{
                     __L->_left = _left;
                     _left = p;
                 }
-
+                /**
+                 * @brief 
+                 * 
+                 * @param p 
+                 * @return _Tree_link_type 若返回结果恰好为p, 则需要遍历修复 p 及上面的所有节点
+                 */
                 virtual _Tree_link_type insert_topasa(_Tree_link_type p) {
                     const _Tree_link_type& a(this);
                     _Tree_link_type p2(static_cast<_Tree_link_type>(p->_right));
@@ -61,16 +66,14 @@ namespace J{
                     if (!p->_has_mid) { //p只有一个孩子
                         if (__key == p2->right_key())
                             return nullptr;
-                        else if (__key > p2->right_key()) {
-                            a->swap(p2);
+                        else if (__key < p2->right_key()) {
+                            swap(p2);
                         }
+                        p2->_parent->_left = p2;
+                        p2->_parent->_right = a;
                         a->_parent = p;
-                        p->_left = a;
+                        return p;
                         //TODO 干脆这里直接返回自己的父节点，然后在insert中判断
-                        for(auto pc(p); pc != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
-                            pc->maintance();
-                        _M_header._node_count++;
-                        _M_header._size++;
                         return nullptr;
                     }
 

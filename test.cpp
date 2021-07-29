@@ -157,8 +157,19 @@ int main() {
         sec.insert(1, 2);
         test(true, "Insert key and value, expected no error");
 
+        sec.traverse();
+
         sec.insert(2, 3);
-        test(true, "ok");
+        test(sec.size() == 2, "Insert another");
+
+        sec.traverse();
+
+        _Section_leaf_node<int, int> l1(1, 20);
+        _Section_leaf_node<int, int> l2(2, 30);
+
+        (&l1)->swap(&l2);
+
+        test(l1.val() == 30 && l2.val() == 20, "test swap");
     }
     testpart("STOP TEST");//mark stop test, essential.
 

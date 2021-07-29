@@ -39,12 +39,13 @@ namespace J{
                 return _pair;
             }
 
-            virtual void swap(const _Tree_link_type& __L) {
+            void swap(const _Tree_link_type& __L) {
                 _Section_tree_node<_Key, _Tp>::swap(__L);
                 //此时还差pair没有变
-                const _Leaf_link_type& tl(static_cast<_Leaf_link_type>(__L));
-                const _Pair& tp(tl->_pair);
+                _Leaf_link_type tl(static_cast<_Leaf_link_type>(__L));
+                const _Pair tp(tl->_pair);
                 tl->_pair = _pair;
+                
                 _pair = tp;
             }
 
