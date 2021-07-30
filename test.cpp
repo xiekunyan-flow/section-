@@ -159,7 +159,7 @@ int main() {
 
         sec.traverse();
 
-        sec.insert(2, 3);
+        sec.insert(0, 3);
         test(sec.size() == 2, "Insert another");
 
         sec.traverse();
@@ -170,6 +170,26 @@ int main() {
         (&l1)->swap(&l2);
 
         test(l1.val() == 30 && l2.val() == 20, "test swap");
+
+        section<int, int> sec2;
+        sec2.insert(0, 0);
+        sec2.insert(1, 1);
+        sec2.insert(2, 2);
+
+        sec2.traverse();
+
+        test(sec2.size() == 3, "insert 3");
+
+        sec2.insert(3, 3);
+        sec2.traverse();
+
+        test(sec2.size() == 4, "insert 4");
+
+        for (int i(4); i < 10; i++) {
+            sec2.insert(i, i);
+            sec2.traverse();
+            test(sec2.size() == i + 1, "insert ", i+1, "nodes");
+        }
     }
     testpart("STOP TEST");//mark stop test, essential.
 

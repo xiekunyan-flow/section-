@@ -193,24 +193,44 @@ class section {
     //Step 2 : 寻找到插入位置
     _Tree_link_type p(_get_insert_unique_pos(__key));
     _Leaf_link_type p2(static_cast<_Leaf_link_type>(p->_right));
-    _Tree_link_type pc{a->insert_topasa(p)};
-    std::cout << p->_left << ' ' << (p->_left == nullptr) << ' ' << p->_right << std::endl;
 
-    if (pc == p) {
-      for (auto pc(p); static_cast<_Tree_node_ptr>(pc) != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
-        pc->maintence();
-      _M_header._node_count++;
-      _M_header._size++;
+    _Tree_link_type ac{nullptr};
+    for (int level(0);;level++) {
+      _Tree_link_type pc{nullptr};
+      if (!level) pc = a->insert_topasa(p);
+      else pc = ac->insert_topasa(p);
+      p->push_up();
+
+      if (pc == p) {
+        for (auto pc(p); static_cast<_Tree_node_ptr>(pc) != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
+          pc->maintence();
+        _M_header._node_count++;
+        _M_header._size++;
+        break;
+      } else if (p->_parent == static_cast<_Tree_node_ptr>(&_M_header)) {
+        _Tree_link_type root = new _Section_tree_node<_Key, _Tp>();
+
+        _M_header._parent = root;
+        root->_parent = &_M_header;
+
+        root->_left = p;
+        p->_parent = root;
+
+        root->_right = pc;
+        pc->_parent = root;
+
+        root->push_up();
+      } else {
+        p = static_cast<_Tree_link_type>(p->_parent);
+        ac = pc;
+      }
     }
-
-    std ::cout << a->val() << ' ' << p2->val() << std::endl;
     // _Leaf_link_type r1(
     a->_prev = p2;
     a->_next = p2->_next;
     a->_next->_prev = a;
     p2->_next = a;
 
-    std::cout << "node_count : " << _M_header._node_count << "; size : " << _M_header._size << std::endl;
   }
 
  private:
@@ -246,7 +266,7 @@ class section {
     return nullptr;
   }
 
-public:
+ public:
   unsigned long size() const {
     return _M_header._size;
   }

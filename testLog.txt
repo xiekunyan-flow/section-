@@ -5,26 +5,26 @@ Start test section vessel
 J.1.0=1 New _Section_leaf_node_base section_leaf_node_base = _Section_leaf_node_base()
 J.1.1=1 Verifying default constructor. Checkout whether section_leaf_node_base._next is nullptr: 0 ,expected nullptr; Checkout whether section_leaf_node_base._prev is nullptr: 0 ,expected nullptr;
 J.1.2=1 Construct Val by pointers to _Section_leaf_node_base: `_Section_leaf_node_base section_leaf_node_base2(&section_leaf_node_base, &section_leaf_node_base);`
-J.1.3=1 Verifying constructor. section_leaf_node_base2._prev: 0x7ffeefbff7a0, expected 0x7ffeefbff7a0. ._next: 0x7ffeefbff7a0, expected 0x7ffeefbff7a0
+J.1.3=1 Verifying constructor. section_leaf_node_base2._prev: 0x7ffeefbff790, expected 0x7ffeefbff790. ._next: 0x7ffeefbff790, expected 0x7ffeefbff790
 } succeeded(4/4). Pass test J.1.
 
 >> Start Test J.1 Checking _Section_tree_node_base {
 J.2.0=1 New _Section_tree_node_base section_tree_node_base = _Section_tree_node_base()
 J.2.1=1 Verifying default constructor. section_tree_node_base._left: 0, expected nullptr. section_tree_node_base._right:0, expected nullptr. section_tree_node_base._parent: 0, expected nullptr.
 J.2.2=1 Construct section_tree_node_base2 by pointers to ._Section_tree_node_base: `_Section_tree_node_base section_tree_node_base2(&tb, &tb, &tb);`
-J.2.3=1 Verifying constructor. section_node_base2._parent: 0x7ffeefbff770, expected 0x7ffeefbff770. ._left: 0x7ffeefbff770, expected 0x7ffeefbff770. ._right: 0x7ffeefbff770, expected: 0x7ffeefbff770
+J.2.3=1 Verifying constructor. section_node_base2._parent: 0x7ffeefbff760, expected 0x7ffeefbff760. ._left: 0x7ffeefbff760, expected 0x7ffeefbff760. ._right: 0x7ffeefbff760, expected: 0x7ffeefbff760
 } succeeded(4/4). Pass test J.2.
 
 >> Start Test J.2 Checking _Section_node_header {
-J.3.0=1 New _Section_node_header, show its ._parent: 0, ._right: 0x7ffeefbff630, ._left: 0x7ffeefbff630
+J.3.0=1 New _Section_node_header, show its ._parent: 0, ._right: 0x7ffeefbff620, ._left: 0x7ffeefbff620
 J.3.1=1 Verify section_node_header's ._size: 0, .node_count: 0, both expected 0
 J.3.2=1 New _Section_node_header section_node_header2 constructed by section_node_header.
-J.3.3=1 Checkout whether section_node_header2's ._left: 0x7ffeefbff670, ._right: 0x7ffeefbff670, this: 0x7ffeefbff670, expected equal.
+J.3.3=1 Checkout whether section_node_header2's ._left: 0x7ffeefbff660, ._right: 0x7ffeefbff660, this: 0x7ffeefbff660, expected equal.
 J.3.4=1 New _Section_node_header section_node_header4 cannot constructed by const section_node_header&.
 J.3.5=1 New _Section_node_header section_node_header5 connected section_node_header forming a circle.
 J.3.6=1 New _Section_node_header section_node_header6 constructed by section_node_header5.
-J.3.7=1 Check whether section_node_header and section_node_header6 forms a circle, section_node_header's this: 0x7ffeefbff630, ._left: 0x7ffeefbff700, ._right: 0x7ffeefbff700, section_node_header6's this: 0x7ffeefbff700, ._left: 0x7ffeefbff630, ._right: 0x7ffeefbff630
-J.3.8=1 Check whether section_node_header5 is reconstructed by default. section_node_header5' this: 0x7ffeefbff6b0, ._left: 0x7ffeefbff6b0, ._right: 0x7ffeefbff6b0
+J.3.7=1 Check whether section_node_header and section_node_header6 forms a circle, section_node_header's this: 0x7ffeefbff620, ._left: 0x7ffeefbff6f0, ._right: 0x7ffeefbff6f0, section_node_header6's this: 0x7ffeefbff6f0, ._left: 0x7ffeefbff620, ._right: 0x7ffeefbff620
+J.3.8=1 Check whether section_node_header5 is reconstructed by default. section_node_header5' this: 0x7ffeefbff6a0, ._left: 0x7ffeefbff6a0, ._right: 0x7ffeefbff6a0
 } succeeded(9/9). Pass test J.3.
 
 >> Start Test J.3 Checking _Section_leaf_node: {
@@ -53,7 +53,15 @@ J.6.1=1 Checking sec's header.
 J.6.2=1 Insert key and value, expected no error
 J.6.3=1 Insert another
 J.6.4=1 test swap
-} succeeded(5/5). Pass test J.6.
+J.6.5=1 insert 3
+J.6.6=1 insert 4
+J.6.7=1 insert 5nodes
+J.6.8=1 insert 6nodes
+J.6.9=1 insert 7nodes
+J.6.10=1 insert 8nodes
+J.6.11=1 insert 9nodes
+J.6.12=1 insert 10nodes
+} succeeded(13/13). Pass test J.6.
 
 -----------------------
 End test section vessel, succeeded part(6/6)
