@@ -172,6 +172,7 @@ int main() {
         test(l1.val() == 30 && l2.val() == 20, "test swap");
 
         section<int, int> sec2;
+
         sec2.insert(0, 0);
         sec2.insert(1, 1);
         sec2.insert(2, 2);
@@ -188,8 +189,9 @@ int main() {
         for (int i(4); i < 10; i++) {
             sec2.insert(i, i);
             sec2.traverse();
-            test(sec2.size() == i + 1, "insert ", i+1, "nodes");
+            test(sec2.size() == i + 1, "insert ", i+1, " nodes");
         }
+
     }
     testpart("STOP TEST");//mark stop test, essential.
 

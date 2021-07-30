@@ -55,12 +55,12 @@ J.6.3=1 Insert another
 J.6.4=1 test swap
 J.6.5=1 insert 3
 J.6.6=1 insert 4
-J.6.7=1 insert 5nodes
-J.6.8=1 insert 6nodes
-J.6.9=1 insert 7nodes
-J.6.10=1 insert 8nodes
-J.6.11=1 insert 9nodes
-J.6.12=1 insert 10nodes
+J.6.7=1 insert 5 nodes
+J.6.8=1 insert 6 nodes
+J.6.9=1 insert 7 nodes
+J.6.10=1 insert 8 nodes
+J.6.11=1 insert 9 nodes
+J.6.12=1 insert 10 nodes
 } succeeded(13/13). Pass test J.6.
 
 -----------------------
