@@ -48,10 +48,41 @@ class _Section_tree_node : public _Section_tree_node_base {
     return _right_key;
   }
   virtual void swap(const _Tree_link_type& __L) {
-    //TODO 补充这里
+    //TODO 狗福看看这!!!!!
     auto p(__L->_left);
     __L->_left = _left;
     _left = p;
+
+    p = __L->_right;
+    __L->_right = _right;
+    _right = p;
+
+    // if (_parent != nullptr) {
+    //     if (_parent->_left = this) _parent->_left = __L;
+    //     else if (_parent->_right = this) _parent->_right = __L;
+    //     else std::cout << "Wrong" << std::endl;
+    // }
+
+    // if (__L->_parent != nullptr) {
+    //     if (__L->_parent->_left = __L) __L->_parent->_left = this;
+    //     else if (__L->_parent->_right = __L) __L->_parent->_right = this;
+    //     else std::cout << "Wrong" << std::endl;
+    // }
+
+    // p = __L->_parent;
+    // __L->_parent = _parent;
+    // _parent = p;
+
+    _has_mid ^= __L->_has_mid ^= _has_mid ^= __L->_has_mid;
+    _Is_leaf ^= __L->_Is_leaf ^= _Is_leaf ^= __L->_Is_leaf;
+
+    auto s(__L->_sum);
+    __L->_sum = _sum;
+    _sum = s;
+
+    auto k(__L->_right_key);
+    __L->_right_key = _right_key;
+    _right_key = k;
   }
   /**
     * @brief 
@@ -69,9 +100,11 @@ class _Section_tree_node : public _Section_tree_node_base {
       else if (__key < p2->right_key()) {
         swap(p2);
       }
-      p2->_parent->_left = p2;
-      p2->_parent->_right = a;
+      p->_left = p2;
+      p->_right = a;
       a->_parent = p;
+
+      p->_has_mid = true;
 
       return p;
     }
@@ -100,6 +133,7 @@ class _Section_tree_node : public _Section_tree_node_base {
    */
   void push_up() {
       _sum = static_cast<_Tree_link_type>(_left)->_sum + static_cast<_Tree_link_type>(_right)->_sum;
+      _right_key = static_cast<_Tree_link_type>(_right)->_right_key;
   }
 };
 

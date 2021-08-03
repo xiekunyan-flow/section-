@@ -61,7 +61,23 @@ J.6.9=1 insert 7 nodes
 J.6.10=1 insert 8 nodes
 J.6.11=1 insert 9 nodes
 J.6.12=1 insert 10 nodes
-} succeeded(13/13). Pass test J.6.
+J.6.13=1 
+J.6.14=1 
+J.6.15=1 
+J.6.16=1 
+J.6.17=1 
+J.6.18=1 
+J.6.19=1 
+J.6.20=1 
+J.6.21=1 
+J.6.22=1 
+J.6.23=1 
+J.6.24=1 
+J.6.25=1 
+J.6.26=1 
+J.6.27=1 
+J.6.28=1 
+} succeeded(29/29). Pass test J.6.
 
 -----------------------
 End test section vessel, succeeded part(6/6)

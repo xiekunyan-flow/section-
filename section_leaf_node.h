@@ -49,6 +49,9 @@ namespace J{
                 _pair = tp;
             }
 
+            virtual _Tree_link_type insert_topasa(_Tree_link_type p) {
+                return _Section_tree_node<_Key, _Tp>::insert_topasa(p);
+            }
         };
 #endif
     }

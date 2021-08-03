@@ -195,17 +195,23 @@ class section {
     _Leaf_link_type p2(static_cast<_Leaf_link_type>(p->_right));
 
     _Tree_link_type ac{nullptr};
-    for (int level(0);;level++) {
+    for (int level(0);; level++) {
       _Tree_link_type pc{nullptr};
-      if (!level) pc = a->insert_topasa(p);
-      else pc = ac->insert_topasa(p);
+      if (!level) {
+        pc = a->insert_topasa(p);
+        std::cout << 23 << std::endl;
+      } else {
+        std::cout << 273 << std::endl;
+
+        pc = ac->insert_topasa(p);
+        std::cout << 2739 << std::endl;
+      }
       p->push_up();
 
       if (pc == p) {
         for (auto pc(p); static_cast<_Tree_node_ptr>(pc) != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
           pc->maintence();
         _M_header._node_count++;
-        _M_header._size++;
         break;
       } else if (p->_parent == static_cast<_Tree_node_ptr>(&_M_header)) {
         _Tree_link_type root = new _Section_tree_node<_Key, _Tp>();
@@ -220,9 +226,14 @@ class section {
         pc->_parent = root;
 
         root->push_up();
+        root->_has_mid = true;
+        _M_header._node_count += 2;
+        break;
       } else {
         p = static_cast<_Tree_link_type>(p->_parent);
         ac = pc;
+
+        ++_M_header._node_count;
       }
     }
     // _Leaf_link_type r1(
@@ -231,39 +242,8 @@ class section {
     a->_next->_prev = a;
     p2->_next = a;
 
-  }
-
- private:
-  /**
-    * @brief 
-    * 
-    * @param a 
-    * @param p 
-    * @return _Tree_link_type 若为nullptr，则说明不需进一步插入
-    */
-  _Tree_link_type insert_atop(_Tree_link_type& a, _Tree_link_type& p) {
-    _Tree_link_type p2(static_cast<_Tree_link_type>(p->_right));
-    auto __key(a->right_key());
-    if (!p->_has_mid) {  //p只有一个孩子
-      if (__key == p2->right_key())
-        return nullptr;
-      else if (__key > p2->right_key()) {
-        a->swap(p2);
-      }
-      a->_parent = p;
-      p->_left = a;
-      for (auto pc(p); pc != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
-        pc->maintence();
-      _M_header._node_count++;
-      _M_header._size++;
-      return nullptr;
-    }
-
-    return nullptr;
-  }
-  _Tree_link_type insert_atop(_Leaf_link_type a, _Tree_link_type p) {
-    //TODO 别忘记复制粘贴
-    return nullptr;
+    //TODO 修改大小
+    ++_M_header._size;
   }
 
  public:
@@ -277,6 +257,25 @@ class section {
       std::cout << lc->val() << ' ';
     }
     std::cout << std::endl;
+  }
+
+  _Tp get(_Key __key) {
+    _Tree_node_ptr t(_M_header._parent);
+    for (int i{0}; t->_left != nullptr || t->_right != nullptr; i++) {
+      _Tree_link_type tl(static_cast<_Tree_link_type>(t));
+      std::cout << "node " << i << " " << (tl->_has_mid) << ' ' << (tl->_right_key) << ' ' << (tl->_left != nullptr) << ' ' << (tl->_right != nullptr);
+      if (!tl->_has_mid || __key > static_cast<_Tree_link_type>(tl->_left)->_right_key) {
+        t = t->_right;
+        std::cout << " turn right" << std::endl;
+      } else {
+        t = t->_left;
+        std::cout << " turn left" << std::endl;
+      }
+      // std::cout << (t!=nullptr) << (t->_left != nullptr || t->_right != nullptr) << std::endl;
+    }
+    _Leaf_link_type l(static_cast<_Leaf_link_type>(t));
+    std::cout << "xxx " << l->key() << ' ' << l->val() << std::endl;
+    return l->val();
   }
 };
 

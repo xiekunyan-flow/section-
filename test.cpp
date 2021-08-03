@@ -192,6 +192,36 @@ int main() {
             test(sec2.size() == i + 1, "insert ", i+1, " nodes");
         }
 
+        test(sec2.get(0) == 0);
+
+        section<int, int> sec3;
+
+        sec3.insert(0, 0);
+
+        test(sec3.get(0) == 0);
+
+        sec3.insert(4, 400);
+        test(sec3.get(4) == 400);
+        test(sec3.get(0) == 0);
+
+        sec3.insert(1, 100);
+        test(sec3.get(0) == 0);
+        test(sec3.get(1) == 100);
+        test(sec3.get(4) == 400);
+
+        sec3.insert(2, 200);
+        test(sec3.get(0) == 0);
+        test(sec3.get(1) == 100);
+        test(sec3.get(2) == 200);
+        test(sec3.get(4) == 400);
+        
+        sec3.insert(10, 1000);
+        test(sec3.get(0) == 0);
+        test(sec3.get(1) == 100);
+        test(sec3.get(2) == 200);
+        test(sec3.get(4) == 400);
+        test(sec3.get(10) == 1000);
+        
     }
     testpart("STOP TEST");//mark stop test, essential.
 
