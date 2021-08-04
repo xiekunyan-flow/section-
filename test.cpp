@@ -186,11 +186,11 @@ int main() {
 
         test(sec2.size() == 4, "insert 4");
 
-        for (int i(4); i < 10; i++) {
-            sec2.insert(i, i);
-            sec2.traverse();
-            test(sec2.size() == i + 1, "insert ", i+1, " nodes");
-        }
+        // for (int i(4); i < 10; i++) {
+        //     sec2.insert(i, i);
+        //     sec2.traverse();
+        //     test(sec2.size() == i + 1, "insert ", i+1, " nodes");
+        // }
 
         test(sec2.get(0) == 0);
 
@@ -221,7 +221,35 @@ int main() {
         test(sec3.get(2) == 200);
         test(sec3.get(4) == 400);
         test(sec3.get(10) == 1000);
+
+        section<int, int> sec4;
+        for (int i(10); i < 20; i++) sec4.insert(i, i + 50);
+        for (int i(30); i < 40; i++) sec4.insert(i, i + 50);
+        for (int i(0); i < 10; i++) sec4.insert(i, i + 50);
+        for (int i(40); i < 50; i++) sec4.insert(i, i + 50);
+        for (int i(20); i < 30; i++) sec4.insert(i, i + 50);
         
+        for (int i(0); i < 50; i++) test(sec4.get(i) == i + 50, "check key is ", i);
+
+        section<int, int> sec5;
+        for (int i(0); i < 4; i++) {
+            sec5.insert(i, i);
+            sec5.traverse();
+        }
+        for (int i(8); i < 12; i++) {
+            sec5.insert(i, i);
+            sec5.traverse();
+        }
+        for (int i(4); i < 8; i++) {
+            sec5.insert(i, i);
+            sec5.traverse();
+        }
+        for (int i(0); i < 12; i++) {
+            test(sec5.get(i) == i);
+        }
+
+        // section<int, int> sec6;
+        // for 
     }
     testpart("STOP TEST");//mark stop test, essential.
 

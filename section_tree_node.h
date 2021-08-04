@@ -49,10 +49,14 @@ class _Section_tree_node : public _Section_tree_node_base {
   }
   virtual void swap(const _Tree_link_type& __L) {
     //TODO 狗福看看这!!!!!
+    if (_left != nullptr) _left->_parent = __L;
+    if (__L->_left != nullptr) __L->_left->_parent = this;
     auto p(__L->_left);
     __L->_left = _left;
     _left = p;
 
+    if (_right != nullptr) _right->_parent = __L;
+    if (__L->_right != nullptr) __L->_right->_parent = this;
     p = __L->_right;
     __L->_right = _right;
     _right = p;
@@ -103,7 +107,6 @@ class _Section_tree_node : public _Section_tree_node_base {
       p->_left = p2;
       p->_right = a;
       a->_parent = p;
-
       p->_has_mid = true;
 
       return p;

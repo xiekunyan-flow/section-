@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 
 #include "section_leaf_node.h"
 #include "section_tree_node.h"
@@ -191,7 +192,10 @@ class section {
      * 勿忘: _M_header _node_count可能变化, 插入成功则 _size++
      */
     //Step 2 : 寻找到插入位置
+    if (__key == 6) 
+      __key = 6;
     _Tree_link_type p(_get_insert_unique_pos(__key));
+    std::cout << p->right_key() << std::endl;
     _Leaf_link_type p2(static_cast<_Leaf_link_type>(p->_right));
 
     _Tree_link_type ac{nullptr};
@@ -199,12 +203,12 @@ class section {
       _Tree_link_type pc{nullptr};
       if (!level) {
         pc = a->insert_topasa(p);
-        std::cout << 23 << std::endl;
+        // std::cout << 23 << std::endl;
       } else {
-        std::cout << 273 << std::endl;
+        // std::cout << 273 << std::endl;
 
         pc = ac->insert_topasa(p);
-        std::cout << 2739 << std::endl;
+        // std::cout << 2739 << std::endl;
       }
       p->push_up();
 
@@ -250,13 +254,38 @@ class section {
   unsigned long size() const {
     return _M_header._size;
   }
-
+  void dfs(_Tree_link_type __t, std::string __s) const {
+    __s += std::to_string(__t->right_key()) + " " + (__t->_has_mid ? "w " : "r ");
+    if (__t->_left != nullptr) {
+      dfs(static_cast<_Tree_link_type>(__t->_left), __s + "left:  ");
+      if (static_cast<_Tree_link_type>(__t->_left->_parent) != __t) {
+        std::cout << "Error left" << __t->right_key() << ' ' << 
+        static_cast<_Tree_link_type>(__t->_left)->right_key();
+        for (auto i(static_cast<_Tree_node_ptr>(__t)); i != nullptr; i = i->_right)
+          std::cout << ' ' << 0;
+        std::cout << std::endl;
+      }
+    }
+    if (__t->_right != nullptr) {
+      dfs(static_cast<_Tree_link_type>(__t->_right), __s + "right: ");
+      if (static_cast<_Tree_link_type>(__t->_right->_parent) != __t) {
+        std::cout << "Error right" << __t->right_key();
+        for (auto i(static_cast<_Tree_node_ptr>(__t)); i != nullptr; i = i->_right)
+          std::cout << ' ' << 0;
+        std::cout << std::endl;
+      }
+    }
+    if (__t->_left == nullptr && __t->_right == nullptr) {
+      std::cout << __s << std::endl;
+    }
+  }
   void traverse() const {
     for (_Leaf_node_ptr l(_M_header._next); static_cast<_Section_node_header*>(l) != &_M_header; l = l->_next) {
       _Leaf_link_type lc{static_cast<_Leaf_link_type>(l)};
       std::cout << lc->val() << ' ';
     }
     std::cout << std::endl;
+    dfs(static_cast<_Tree_link_type>(_M_header._parent), "");
   }
 
   _Tp get(_Key __key) {
