@@ -248,8 +248,13 @@ int main() {
             test(sec5.get(i) == i);
         }
 
-        // section<int, int> sec6;
-        // for 
+        section<int, int> sec6;
+        for (int i(0); i < 100; i++) sec6.insert(i * 97 % 100, i * 97 % 100);
+        
+        for (int i(0); i < 100; i++) test(sec6.get(i) == i);
+        sec6.traverse();
+
+        sec4.traverse();
     }
     testpart("STOP TEST");//mark stop test, essential.
 
