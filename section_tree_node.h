@@ -48,7 +48,6 @@ class _Section_tree_node : public _Section_tree_node_base {
     return _right_key;
   }
   virtual void swap(const _Tree_link_type& __L) {
-    //TODO 狗福看看这!!!!!
     if (_left != nullptr) _left->_parent = __L;
     if (__L->_left != nullptr) __L->_left->_parent = this;
     auto p(__L->_left);
@@ -60,22 +59,6 @@ class _Section_tree_node : public _Section_tree_node_base {
     p = __L->_right;
     __L->_right = _right;
     _right = p;
-
-    // if (_parent != nullptr) {
-    //     if (_parent->_left = this) _parent->_left = __L;
-    //     else if (_parent->_right = this) _parent->_right = __L;
-    //     else std::cout << "Wrong" << std::endl;
-    // }
-
-    // if (__L->_parent != nullptr) {
-    //     if (__L->_parent->_left = __L) __L->_parent->_left = this;
-    //     else if (__L->_parent->_right = __L) __L->_parent->_right = this;
-    //     else std::cout << "Wrong" << std::endl;
-    // }
-
-    // p = __L->_parent;
-    // __L->_parent = _parent;
-    // _parent = p;
 
     _has_mid ^= __L->_has_mid ^= _has_mid ^= __L->_has_mid;
     _Is_leaf ^= __L->_Is_leaf ^= _Is_leaf ^= __L->_Is_leaf;

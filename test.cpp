@@ -255,6 +255,10 @@ int main() {
         sec6.traverse();
 
         sec4.traverse();
+
+        section<int, int> sec7;
+        for (int i(0); i < 100; i++) sec7.insert(i, i);
+        sec7.traverse();
     }
     testpart("STOP TEST");//mark stop test, essential.
 

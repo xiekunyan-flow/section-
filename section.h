@@ -103,50 +103,6 @@ class section {
     }
     return static_cast<_Tree_link_type>(tl->_parent);
   }
-  /**
-    * @brief  在B+树插入时，让B+树长高一层，__node会连接在新root
-    *         上。
-    * @param  __node  inserted new branch connected to new root.
-    */
-  void _build_higher_root(_Tree_node_ptr __node) {
-    //TODO 这里需要关注,
-  }
-  /**
-    *  @brief  更新节点维护信息
-    *  @param  __node  需要更新的节点
-    */
-  void push_up(_Tree_link_type __node) {
-    __node->_sum = 0;
-  }
-  /**
-    *  @brief  交换两个叶子节点的信息
-    *  @param  __nodeA 需要交换的叶子节点
-    *  @param  __nodeB 需要交换的叶子节点
-    */
-  void swap(_Leaf_link_type& __nodeA, _Leaf_link_type& __nodeB) {
-    //先交换两个
-    //TODO 需清理
-    const auto& pr(__nodeA->pair());
-    __nodeA->pair() = __nodeB->pair();
-    __nodeB->pair() = pr;
-    std::cout << "Leaf link exchanged" << std::endl;
-  }
-  /**
-    *  @brief  交换两个非叶子节点的信息
-    *  @param  __nodeA 需要交换的非叶子节点
-    *  @param  __nodeB 需要交换的非叶子节点
-    */
-  void swap(_Tree_link_type& __nodeA, _Tree_link_type& __nodeB) {
-    std::cout << "Tree link exchanged" << std::endl;
-  }
-  /**
-    *  @brief  新增一个更高的节点，并返回它
-    *  @param  __node  The node who wants a higher node.
-    */
-  _Tree_node_ptr _build_higher_node(_Tree_node_ptr __node) {
-    //TODO
-    return _Tree_node_ptr();
-  }
 
  public:
   /**
@@ -155,18 +111,11 @@ class section {
     *  @param  __key  插入的键
     */
   void insert(key_type __key, mapped_type __value) {
-    /*TODO 待清理
-     * 我的计划是, 当树为空时分类讨论, 直接插入.
-     * 这个想法虽然可能欠考虑, 但可以快速看到效果
-     */
     //Step 1: 新建插入的`_Section_leaf_node`节点a
     _Leaf_link_type new_leaf_node = new _Leaf_node_type(__key, __value);
     _Leaf_link_type& a(new_leaf_node);
     //Step 1.2 : 如果线段树为空直接搞
-    //TODO 修复
     if (_M_header._size == 0 && _M_header._node_count == 0) {
-      std::cout << __key << ' ' << __value << std::endl;
-      int a{0};
       _Tree_link_type new_tree_node = new _Tree_node_type(__key, __value);
 
       new_tree_node->_right = new_leaf_node;
@@ -184,7 +133,6 @@ class section {
       _M_header._node_count = 2;
       _M_header._size = 1;
 
-      std::cout << (new_tree_node->_left == nullptr) << std::endl;
       return;
     }
     /*FIXME
@@ -200,24 +148,25 @@ class section {
 
     _Tree_link_type ac{nullptr};
     for (int level(0);; level++) {
+      //Step 3: 尝试插入
       _Tree_link_type pc{nullptr};
       if (!level) {
         pc = a->insert_topasa(p);
-        // std::cout << 23 << std::endl;
       } else {
-        // std::cout << 273 << std::endl;
-
         pc = ac->insert_topasa(p);
-        // std::cout << 2739 << std::endl;
       }
+
+      //Step 3.1: 修复父节点
       p->push_up();
 
       if (pc == p) {
+        //Step 4.1: 情况一, p 只有一个孩子, 所以直接插入
         for (auto pc(p); static_cast<_Tree_node_ptr>(pc) != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
           pc->maintence();
         _M_header._node_count++;
         break;
       } else if (p->_parent == static_cast<_Tree_node_ptr>(&_M_header)) {
+        //Step 4.2: 情况二, p 有两个孩子且是根节点, 新建一个根节点
         _Tree_link_type root = new _Section_tree_node<_Key, _Tp>();
 
         _M_header._parent = root;
@@ -234,26 +183,31 @@ class section {
         _M_header._node_count += 2;
         break;
       } else {
+        //Step 4.3: 情况三, p 有两个孩子且不是根节点
         p = static_cast<_Tree_link_type>(p->_parent);
         ac = pc;
 
         ++_M_header._node_count;
       }
+
+      //Step 5: 重复Step 3 至 4
     }
-    // _Leaf_link_type r1(
+
+    //Step 6: 修复底层链路
     a->_prev = p2;
     a->_next = p2->_next;
     a->_next->_prev = a;
     p2->_next = a;
 
-    //TODO 修改大小
+    //TODO 现在默认可以插入成功, 因而标记_size++
     ++_M_header._size;
   }
 
- public:
+  public:
   unsigned long size() const {
     return _M_header._size;
   }
+  public:
   void dfs(_Tree_link_type __t, std::string __s) const {
     __s += std::to_string(__t->right_key()) + " " + (__t->_has_mid ? "w " : "r ");
     if (__t->_left != nullptr) {
@@ -300,7 +254,6 @@ class section {
         t = t->_left;
         std::cout << " turn left" << std::endl;
       }
-      // std::cout << (t!=nullptr) << (t->_left != nullptr || t->_right != nullptr) << std::endl;
     }
     _Leaf_link_type l(static_cast<_Leaf_link_type>(t));
     std::cout << "xxx " << l->key() << ' ' << l->val() << std::endl;
