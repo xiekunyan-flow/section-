@@ -6,10 +6,9 @@ namespace tree_node {
 template <typename _Key, typename _Tp>
 class _Section_tree_node : public _Section_tree_node_base {
  public:
-  //     typedef bool _Child_exist;
-  //     typedef std::pair<const _Key, _Tp>		value_type;
-  //     typedef _Tp mapped_type;
-  //     //typedef bool _Is_leaf;
+  typedef std::pair<const _Key, _Tp> value_type;
+  typedef _Tp mapped_type;
+  //typedef bool _Is_leaf;
 
   //     //家福在这想想初始化_Is_leaf为什么比较好
   //     _Section_leaf_node() noexcept :  _Is_leaf(false), _M_Field(value_type()), {}
@@ -23,6 +22,8 @@ class _Section_tree_node : public _Section_tree_node_base {
 
   typedef _Section_tree_node<_Key, _Tp>* _Tree_link_type;
 
+ public:
+  
  public:
   _Key _right_key;
   bool _has_mid;
@@ -101,9 +102,8 @@ class _Section_tree_node : public _Section_tree_node_base {
     if (__key < mid_key) {
       swap(p1);
       swap(p2);
-    }
-    else if (__key < p2->right_key()) {
-        swap(p2);
+    } else if (__key < p2->right_key()) {
+      swap(p2);
     }
 
     //这里其实可以用复制构造函数, 或者一个其他函数?
@@ -118,8 +118,8 @@ class _Section_tree_node : public _Section_tree_node_base {
    * 
    */
   void push_up() {
-      _sum = static_cast<_Tree_link_type>(_left)->_sum + static_cast<_Tree_link_type>(_right)->_sum;
-      _right_key = static_cast<_Tree_link_type>(_right)->_right_key;
+    _sum = static_cast<_Tree_link_type>(_left)->_sum + static_cast<_Tree_link_type>(_right)->_sum;
+    _right_key = static_cast<_Tree_link_type>(_right)->_right_key;
   }
 };
 

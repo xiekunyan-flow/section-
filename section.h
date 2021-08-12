@@ -234,7 +234,7 @@ class section {
     }
   }
   void traverse() const {
-    for (_Leaf_node_ptr l(_M_header._next); static_cast<_Section_node_header*>(l) != &_M_header; l = l->_next) {
+    for (_Tree_node_ptr l(_M_header._next); static_cast<_Section_node_header*>(l) != &_M_header; l = l->_next) {
       _Leaf_link_type lc{static_cast<_Leaf_link_type>(l)};
       std::cout << lc->val() << ' ';
     }
