@@ -1,3 +1,14 @@
+# Algorithm
+## Insert and Rebalanced
+1. 新建插入的`_Section_leaf_node`节点a
+2. 寻找到插入位置（节点a应该的父亲p），若无，则新建根节点
+   1. p只有一个孩子，那么直接插入，并且遍历push_up上面所有的节点，并结束
+   2. p有2个孩子，则swap，并更新push_up上一个节点p的维护信息
+3. 如果p有右节点pr，则如果pr只有一个孩子，将a插入pr，并且遍历push_up上面所有节点，并结束
+4. 新建一个和p同级的的节点b，连接a作为b的右孩子
+5. 向上一层，找到pp，
+   1. 如果不到头，重复3、4、5
+   2. 到头，新建根节点
 # Structure
 
 1. 指向父节点，指向子节点，叶子节点不同
@@ -31,38 +42,9 @@ _Val _M_storage; //231行，可替换为
 1. `_Rb_tree_key_compare`
 2. 好像多重继承有些问题，还是杜绝多重继承比较好，一种合理的做法是，认为最后一层没有孩子节点，所以leaf_node不再继承_Section_tree_node_base，这样标记下一层是leaf节点就成为必须的了
 3. 另一种我更建议的做法是去掉_Section_node_base，并且把._parent属性转交给_Section_leaf_node,
-4. `_Section_node_header`最后还是继承了`_Section_tree_node`，不过我还是打算用`_left`标记最大的节点，用`_right`标记最小的节点。
+4. _Section_node_header中定名为`_parent`还是`_root`，我打算用`_root`了
 5. 代码规范，写在.h里还是.cpp里
-6. `tree_node`有哪些成员？我打算整一个`_mid`, `_right`, `_has_mid`, `_Is_leaf`, (`_sum`)
-   1. _sum 如何改进
-7. F和J的空格多少貌似有歧义。
-8. typedef只放在tree里就行了吧，除了`_Link_type`, however, seems that `Link_type` doesnot used at all.
-9. 我的test工具
-10. 目前只支持add和sum
-11. 插入时若本来就有这个节点
-12. 家福为啥执意tree节点只保留一个数据呢
-13. 交换叶子节点和交换tree节点是不同的
-14. throw，比如insert时
 
 ## Notes
 
 1. &&不能处理const&, 处理&还需要move
-
-## Rb_tree
-
-1. `alloc_node`
-2. `construct_node`, `create_node`
-3. `insert_and_rebalance`目前找不到是怎么实现的，但我觉得能做
-4. _M_get_insert_unique_pos
-
-## Idea
-
-1. 新建插入的`_Section_leaf_node`节点a
-2. 寻找到插入位置（节点a应该的父亲p），若无，则新建根节点
-   1. p只有一个孩子，那么直接插入，并且遍历push_up上面所有的节点，并结束
-   2. p有2个孩子，则swap，并更新push_up上一个节点p的维护信息
-3. 新建一个和p同级的的节点b，连接a作为b的右孩子
-4. 向上一层，找到pp，
-   1. 如果不到头，重复3、4、5
-   2. 到头，新建根节点
-
