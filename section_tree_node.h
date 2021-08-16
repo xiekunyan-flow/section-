@@ -111,16 +111,23 @@ class _Section_tree_node : public _Section_tree_node_base {
       swap(p2);
     }
 
-    //这里其实可以用复制构造函数, 或者一个其他函数?
-    _Tree_link_type pp = new _Section_tree_node<_Key, _Tp>(right_key(), _sum);
-    a->_parent = pp;
-    pp->_right = a;
-
     a->_prev = p2;
     a->_next = p2->_next;
     if (a->_next != nullptr)
       a->_next->_prev = a;
     p2->_next = a;
+
+    if (p->_next != nullptr && p->_next->_left == nullptr) {
+      static_cast<_Tree_link_type>(p->_next)->_has_mid = true;
+      
+      a->_parent = p->_next;
+      p->_next->_left = a;
+      return static_cast<_Tree_link_type>(p->_next);
+    }
+    //这里其实可以用复制构造函数, 或者一个其他函数?
+    _Tree_link_type pp = new _Section_tree_node<_Key, _Tp>(right_key(), _sum);
+    a->_parent = pp;
+    pp->_right = a;
 
     return pp;
   }

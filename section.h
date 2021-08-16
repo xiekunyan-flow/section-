@@ -165,7 +165,15 @@ class section {
           pc->maintence();
         _M_header._node_count++;
         break;
-      } else if (p->_parent == static_cast<_Tree_node_ptr>(&_M_header)) {
+      } else if (pc == static_cast<_Tree_link_type>(p->_next)) {
+        for (auto pc(p); static_cast<_Tree_node_ptr>(pc) != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
+          pc->maintence();
+        for (auto px(pc); static_cast<_Tree_node_ptr>(px) != &_M_header; px = static_cast<_Tree_link_type>(px->_parent))
+          px->maintence();
+        _M_header._node_count++;
+        traverse();
+        break;
+      }else if (p->_parent == static_cast<_Tree_node_ptr>(&_M_header)) {
         //Step 4.2: 情况二, p 有两个孩子且是根节点, 新建一个根节点
         _Tree_link_type root = new _Section_tree_node<_Key, _Tp>();
 
@@ -244,9 +252,13 @@ class section {
     int i{0};
     for (_Tree_node_ptr t(_M_header._parent); t != nullptr; i++) {
       std::cout << "level " << i << std::endl;
+      _Key k(static_cast<_Tree_link_type>(t)->_right_key);
       for (_Tree_node_ptr t0(t); t0 != nullptr && t0 != &_M_header; t0 = t0->_next) {
         _Tree_link_type l(static_cast<_Tree_link_type>(t0));
         std::cout << "(" << l->_right_key << ", " << l->_sum << ") ";
+        if (k > l->_right_key)
+          std::cout << "Wrong" << std::endl;
+        k = l->_right_key;
       }
       std::cout << std::endl;
       if (t->_left != nullptr)
