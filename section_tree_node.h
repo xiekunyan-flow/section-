@@ -23,7 +23,6 @@ class _Section_tree_node : public _Section_tree_node_base {
   typedef _Section_tree_node<_Key, _Tp>* _Tree_link_type;
 
  public:
-  
  public:
   _Key _right_key;
   bool _has_mid;
@@ -93,6 +92,12 @@ class _Section_tree_node : public _Section_tree_node_base {
       a->_parent = p;
       p->_has_mid = true;
 
+      a->_prev = p2;
+      a->_next = p2->_next;
+      if (a->_next != nullptr)
+        a->_next->_prev = a;
+      p2->_next = a;
+
       return p;
     }
     //p 有两个孩子
@@ -110,6 +115,13 @@ class _Section_tree_node : public _Section_tree_node_base {
     _Tree_link_type pp = new _Section_tree_node<_Key, _Tp>(right_key(), _sum);
     a->_parent = pp;
     pp->_right = a;
+
+    a->_prev = p2;
+    a->_next = p2->_next;
+    if (a->_next != nullptr)
+      a->_next->_prev = a;
+    p2->_next = a;
+
     return pp;
   }
 

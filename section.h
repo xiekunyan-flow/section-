@@ -180,6 +180,10 @@ class section {
 
         root->push_up();
         root->_has_mid = true;
+
+        p->_next = pc;
+        pc->_prev = p;
+
         _M_header._node_count += 2;
         break;
       } else {
@@ -194,10 +198,6 @@ class section {
     }
 
     //Step 6: 修复底层链路
-    a->_prev = p2;
-    a->_next = p2->_next;
-    a->_next->_prev = a;
-    p2->_next = a;
 
     //TODO 现在默认可以插入成功, 因而标记_size++
     ++_M_header._size;
@@ -234,12 +234,26 @@ class section {
     }
   }
   void traverse() const {
-    for (_Tree_node_ptr l(_M_header._next); static_cast<_Section_node_header*>(l) != &_M_header; l = l->_next) {
-      _Leaf_link_type lc{static_cast<_Leaf_link_type>(l)};
-      std::cout << lc->val() << ' ';
-    }
-    std::cout << std::endl;
+    //TODO 清理
+    // for (_Tree_node_ptr l(_M_header._next); static_cast<_Section_node_header*>(l) != &_M_header; l = l->_next) {
+    //   _Leaf_link_type lc{static_cast<_Leaf_link_type>(l)};
+    //   std::cout << lc->val() << ' ';
+    // }
+    // std::cout << std::endl;
     dfs(static_cast<_Tree_link_type>(_M_header._parent), "");
+    int i{0};
+    for (_Tree_node_ptr t(_M_header._parent); t != nullptr; i++) {
+      std::cout << "level " << i << std::endl;
+      for (_Tree_node_ptr t0(t); t0 != nullptr && t0 != &_M_header; t0 = t0->_next) {
+        _Tree_link_type l(static_cast<_Tree_link_type>(t0));
+        std::cout << "(" << l->_right_key << ", " << l->_sum << ") ";
+      }
+      std::cout << std::endl;
+      if (t->_left != nullptr)
+        t = t->_left;
+      else
+        t = t->_right;
+    }
   }
 
   _Tp get(_Key __key) {
