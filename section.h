@@ -18,6 +18,7 @@ class section {
  public:
   typedef _Key key_type;
   typedef _Tp mapped_type;
+  typedef std::pair<_Key, _Tp> _Pair;
   typedef _Compare key_compare;
   typedef _Alloc allocator_type;
 
@@ -116,7 +117,7 @@ class section {
     _Leaf_link_type& a(new_leaf_node);
     //Step 1.2 : 如果线段树为空直接搞
     if (_M_header._size == 0 && _M_header._node_count == 0) {
-      _Tree_link_type new_tree_node = new _Tree_node_type(__key, __value);
+      _Tree_link_type new_tree_node = new _Tree_node_type(__key, __key, __value);
 
       new_tree_node->_right = new_leaf_node;
       new_leaf_node->_parent = new_tree_node;
@@ -211,11 +212,38 @@ class section {
     ++_M_header._size;
   }
 
-  public:
+private:
+  _Pair get_min_pair() {
+    return static_cast<_Leaf_link_type>(_M_header._next)->pair();
+  }
+
+  mapped_type get_sum(_Tree_link_type __t, key_type __l, key_type __r, key_type __ml) {
+    if (__t == nullptr) return mapped_type();
+    key_type mr(__t->right_key());
+    key_type ml(__ml);
+    if (mr < __l || ml >= __r) return mapped_type();
+    if (ml >= __l && mr < __r) return __t->_sum;
+    mapped_type lsum{get_sum(static_cast<_Tree_link_type>(__t->_left), __l, __r, __ml)};
+    mapped_type rsum{get_sum(static_cast<_Tree_link_type>(__t->_right), __l, __r, 
+    __t->_left == nullptr ? __ml : static_cast<_Tree_link_type>(__t->_left)->right_key())};
+    return lsum + rsum;
+  }
+public:
+  /**
+   * @brief 求指定[__l, __r) 范围内的和
+   * 
+   * @param __l 左 _Key
+   * @param __r 右 _Key
+   * @return mapped_type 
+   */
+  mapped_type query(key_type __l, key_type __r) {
+    if (__l >= __r) return mapped_type();
+  }
+public:
   unsigned long size() const {
     return _M_header._size;
   }
-  public:
+public:
   void dfs(_Tree_link_type __t, std::string __s) const {
     __s += std::to_string(__t->right_key()) + " " + (__t->_has_mid ? "w " : "r ");
     if (__t->_left != nullptr) {
@@ -255,7 +283,7 @@ class section {
       _Key k(static_cast<_Tree_link_type>(t)->_right_key);
       for (_Tree_node_ptr t0(t); t0 != nullptr && t0 != &_M_header; t0 = t0->_next) {
         _Tree_link_type l(static_cast<_Tree_link_type>(t0));
-        std::cout << "(" << l->_right_key << ", " << l->_sum << ") ";
+        std::cout << "(" << l->left_key() << ", " << l->right_key() << ", " << l->_sum << ") ";
         if (k > l->_right_key)
           std::cout << "Wrong" << std::endl;
         k = l->_right_key;

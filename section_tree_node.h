@@ -24,29 +24,37 @@ class _Section_tree_node : public _Section_tree_node_base {
 
  public:
  public:
+  _Key _left_key;
   _Key _right_key;
   bool _has_mid;
   bool _Is_leaf;
   _Tp _sum;  //当前版本只能求和
  public:
-  _Section_tree_node<_Key, _Tp>() noexcept : _right_key(_Key()), _has_mid(false), _Is_leaf(false), _sum(_Tp()) {}
+  _Section_tree_node<_Key, _Tp>() noexcept : _left_key(_Key()), _right_key(_Key()), _has_mid(false), _Is_leaf(false), _sum(_Tp()) {}
 
-  _Section_tree_node<_Key, _Tp>(_Key __right_key, _Tp __sum) noexcept : _right_key(__right_key), _has_mid(false), _Is_leaf(false), _sum(__sum) {}
+  _Section_tree_node<_Key, _Tp>(_Key __left_key, _Key __right_key, _Tp __sum) noexcept : _left_key(__left_key), _right_key(__right_key), _has_mid(false), _Is_leaf(false), _sum(__sum) {}
 
   void maintence() {
     auto r(static_cast<_Section_tree_node<_Key, _Tp>*>(_right));
     _sum = r->_sum;
     _right_key = r->_right_key;
+    _left_key = r->left_key();
 
     if (_left != nullptr) {
       auto l(static_cast<_Section_tree_node<_Key, _Tp>*>(_left));
       _sum += l->_sum;
+      _left_key = l->left_key();
     }
   }
 
   const _Key& right_key() {
     return _right_key;
   }
+
+  const _Key& left_key() {
+    return _left_key;
+  }
+
   virtual void swap(const _Tree_link_type& __L) {
     if (_left != nullptr) _left->_parent = __L;
     if (__L->_left != nullptr) __L->_left->_parent = this;
@@ -70,6 +78,10 @@ class _Section_tree_node : public _Section_tree_node_base {
     auto k(__L->_right_key);
     __L->_right_key = _right_key;
     _right_key = k;
+
+    k = __L->left_key();
+    __L->_left_key = _left_key;
+    _left_key = k;
   }
   /**
     * @brief 
@@ -119,13 +131,13 @@ class _Section_tree_node : public _Section_tree_node_base {
 
     if (p->_next != nullptr && p->_next->_left == nullptr) {
       static_cast<_Tree_link_type>(p->_next)->_has_mid = true;
-      
+
       a->_parent = p->_next;
       p->_next->_left = a;
       return static_cast<_Tree_link_type>(p->_next);
     }
     //这里其实可以用复制构造函数, 或者一个其他函数?
-    _Tree_link_type pp = new _Section_tree_node<_Key, _Tp>(right_key(), _sum);
+    _Tree_link_type pp = new _Section_tree_node<_Key, _Tp>(left_key(), right_key(), _sum);
     a->_parent = pp;
     pp->_right = a;
 
@@ -139,6 +151,10 @@ class _Section_tree_node : public _Section_tree_node_base {
   void push_up() {
     _sum = static_cast<_Tree_link_type>(_left)->_sum + static_cast<_Tree_link_type>(_right)->_sum;
     _right_key = static_cast<_Tree_link_type>(_right)->_right_key;
+    _left_key = static_cast<_Tree_link_type>(_right)->_left_key;
+
+    if (_left != nullptr)
+      _left_key = static_cast<_Tree_link_type>(_left)->_left_key;
   }
 };
 

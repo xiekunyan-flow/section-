@@ -23,7 +23,7 @@ namespace J{
             //TODO 其实这里val可以改个名
             typedef std::pair<_Key, _Tp> _Pair;
             _Section_leaf_node() noexcept : _pair(std::pair<_Key, _Tp>()) { }
-            _Section_leaf_node(_Key __key, _Tp __value) : _Section_tree_node<_Key, _Tp>(__key, __value), _pair(_Pair(__key, __value)){}
+            _Section_leaf_node(_Key __key, _Tp __value) : _Section_tree_node<_Key, _Tp>(__key, __key, __value), _pair(_Pair(__key, __value)){}
             _Pair* _valptr() { return &_pair; }
 
             const _Pair* _valptr() const { return static_cast<const _Pair*>(&_pair); }
