@@ -217,16 +217,15 @@ private:
     return static_cast<_Leaf_link_type>(_M_header._next)->pair();
   }
 
-  mapped_type get_sum(_Tree_link_type __t, key_type __l, key_type __r, key_type __ml) {
+  mapped_type get_sum(_Tree_link_type __t, key_type __l, key_type __r) {
     if (__t == nullptr) return mapped_type();
     key_type mr(__t->right_key());
-    key_type ml(__ml);
+    key_type ml(__t->left_key());
     if (mr < __l || ml >= __r) return mapped_type();
     if (ml >= __l && mr < __r) return __t->_sum;
-    mapped_type lsum{get_sum(static_cast<_Tree_link_type>(__t->_left), __l, __r, __ml)};
-    mapped_type rsum{get_sum(static_cast<_Tree_link_type>(__t->_right), __l, __r, 
-    __t->_left == nullptr ? __ml : static_cast<_Tree_link_type>(__t->_left)->right_key())};
-    return lsum + rsum;
+    _Tree_link_type l{static_cast<_Tree_link_type>(__t->_left)};
+    _Tree_link_type r{static_cast<_Tree_link_type>(__t->_right)};
+    return get_sum(l, __l, __r) + get_sum(r, __l, __r);
   }
 public:
   /**
@@ -238,6 +237,7 @@ public:
    */
   mapped_type query(key_type __l, key_type __r) {
     if (__l >= __r) return mapped_type();
+    return get_sum(static_cast<_Tree_link_type>(_M_header._parent), __l, __r);
   }
 public:
   unsigned long size() const {
