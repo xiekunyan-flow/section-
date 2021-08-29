@@ -283,7 +283,7 @@ public:
       _Key k(static_cast<_Tree_link_type>(t)->_right_key);
       for (_Tree_node_ptr t0(t); t0 != nullptr && t0 != &_M_header; t0 = t0->_next) {
         _Tree_link_type l(static_cast<_Tree_link_type>(t0));
-        std::cout << "(" << l->left_key() << ", " << l->right_key() << ", " << l->_sum << ") ";
+        std::cout << "(" << l->left_key() << ", " << l->right_key() << ", " << l->_size << ", " << l->_sum << ") ";
         if (k > l->_right_key)
           std::cout << "Wrong" << std::endl;
         k = l->_right_key;

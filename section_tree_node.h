@@ -29,21 +29,24 @@ class _Section_tree_node : public _Section_tree_node_base {
   bool _has_mid;
   bool _Is_leaf;
   _Tp _sum;  //当前版本只能求和
+  unsigned _size;
  public:
-  _Section_tree_node<_Key, _Tp>() noexcept : _left_key(_Key()), _right_key(_Key()), _has_mid(false), _Is_leaf(false), _sum(_Tp()) {}
+  _Section_tree_node<_Key, _Tp>() noexcept : _left_key(_Key()), _right_key(_Key()), _has_mid(false), _Is_leaf(false), _sum(_Tp()), _size(1) {}
 
-  _Section_tree_node<_Key, _Tp>(_Key __left_key, _Key __right_key, _Tp __sum) noexcept : _left_key(__left_key), _right_key(__right_key), _has_mid(false), _Is_leaf(false), _sum(__sum) {}
+  _Section_tree_node<_Key, _Tp>(_Key __left_key, _Key __right_key, _Tp __sum) noexcept : _left_key(__left_key), _right_key(__right_key), _has_mid(false), _Is_leaf(false), _sum(__sum), _size(1) {}
 
   void maintence() {
     auto r(static_cast<_Section_tree_node<_Key, _Tp>*>(_right));
     _sum = r->_sum;
     _right_key = r->_right_key;
     _left_key = r->left_key();
+    _size = r->_size;
 
     if (_left != nullptr) {
       auto l(static_cast<_Section_tree_node<_Key, _Tp>*>(_left));
       _sum += l->_sum;
       _left_key = l->left_key();
+      _size += l->_size;
     }
   }
 
@@ -82,6 +85,10 @@ class _Section_tree_node : public _Section_tree_node_base {
     k = __L->left_key();
     __L->_left_key = _left_key;
     _left_key = k;
+
+    unsigned sz{__L->_size};
+    __L->_size = _size;
+    _size = sz;
   }
   /**
     * @brief 
@@ -140,6 +147,7 @@ class _Section_tree_node : public _Section_tree_node_base {
     _Tree_link_type pp = new _Section_tree_node<_Key, _Tp>(left_key(), right_key(), _sum);
     a->_parent = pp;
     pp->_right = a;
+    pp->_size = a->_size;
 
     return pp;
   }
@@ -152,9 +160,12 @@ class _Section_tree_node : public _Section_tree_node_base {
     _sum = static_cast<_Tree_link_type>(_left)->_sum + static_cast<_Tree_link_type>(_right)->_sum;
     _right_key = static_cast<_Tree_link_type>(_right)->_right_key;
     _left_key = static_cast<_Tree_link_type>(_right)->_left_key;
+    _size = static_cast<_Tree_link_type>(_right)->_size;
 
     if (_left != nullptr)
       _left_key = static_cast<_Tree_link_type>(_left)->_left_key;
+      _size += static_cast<_Tree_link_type>(_left)->_size;
+
   }
 };
 
