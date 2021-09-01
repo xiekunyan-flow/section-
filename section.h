@@ -114,7 +114,7 @@ class section {
   void insert(key_type __key, mapped_type __value) {
     //Step 1: 新建插入的`_Section_leaf_node`节点a
     _Leaf_link_type new_leaf_node = new _Leaf_node_type(__key, __value);
-    _Leaf_link_type& a(new_leaf_node);
+    _Leaf_link_type a(new_leaf_node);
     //Step 1.2 : 如果线段树为空直接搞
     if (_M_header._size == 0 && _M_header._node_count == 0) {
       _Tree_link_type new_tree_node = new _Tree_node_type(__key, __key, __value);
@@ -141,7 +141,7 @@ class section {
      * 勿忘: _M_header _node_count可能变化, 插入成功则 _size++
      */
     //Step 2 : 寻找到插入位置
-    if (__key == 6) 
+    if (__key == 6)
       __key = 6;
     _Tree_link_type p(_get_insert_unique_pos(__key));
     std::cout << p->right_key() << std::endl;
@@ -174,7 +174,7 @@ class section {
         _M_header._node_count++;
         traverse();
         break;
-      }else if (p->_parent == static_cast<_Tree_node_ptr>(&_M_header)) {
+      } else if (p->_parent == static_cast<_Tree_node_ptr>(&_M_header)) {
         //Step 4.2: 情况二, p 有两个孩子且是根节点, 新建一个根节点
         _Tree_link_type root = new _Section_tree_node<_Key, _Tp>();
 
@@ -212,7 +212,7 @@ class section {
     ++_M_header._size;
   }
 
-private:
+ private:
   _Pair get_min_pair() {
     return static_cast<_Leaf_link_type>(_M_header._next)->pair();
   }
@@ -225,9 +225,13 @@ private:
     if (ml >= __l && mr < __r) return __t->_sum;
     _Tree_link_type l{static_cast<_Tree_link_type>(__t->_left)};
     _Tree_link_type r{static_cast<_Tree_link_type>(__t->_right)};
+    if (l != nullptr) l->push_down(__t->_add);
+    r->push_down(__t->_add);
+    __t->_add = _Tp();
     return get_sum(l, __l, __r) + get_sum(r, __l, __r);
   }
-public:
+
+ public:
   /**
    * @brief 求指定[__l, __r) 范围内的和
    * 
@@ -239,18 +243,41 @@ public:
     if (__l >= __r) return mapped_type();
     return get_sum(static_cast<_Tree_link_type>(_M_header._parent), __l, __r);
   }
-public:
+
+ private:
+  void add_range(_Tree_link_type __t, key_type __l, key_type __r, mapped_type __d_add) {
+    if (__t == nullptr) return;
+    key_type mr(__t->right_key());
+    key_type ml(__t->left_key());
+    if (mr < __l || ml >= __r) return;
+    if (ml >= __l && mr < __r) {
+      __t->_add += __d_add;
+      for (_Tree_link_type pc(__t); static_cast<_Tree_node_ptr>(pc) != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
+        pc->push_up(__d_add, __t->_size);
+      return;
+    }
+    add_range(static_cast<_Tree_link_type>(__t->_left), __l, __r, __d_add);
+    add_range(static_cast<_Tree_link_type>(__t->_right), __l, __r, __d_add);
+  }
+
+ public:
+  void add_range(key_type __l, key_type __r, mapped_type __d_add) {
+    if (__l >= __r) return;
+    add_range(static_cast<_Tree_link_type>(_M_header._parent), __l, __r, __d_add);
+  }
+
+ public:
   unsigned long size() const {
     return _M_header._size;
   }
-public:
+
+ public:
   void dfs(_Tree_link_type __t, std::string __s) const {
     __s += std::to_string(__t->right_key()) + " " + (__t->_has_mid ? "w " : "r ");
     if (__t->_left != nullptr) {
       dfs(static_cast<_Tree_link_type>(__t->_left), __s + "left:  ");
       if (static_cast<_Tree_link_type>(__t->_left->_parent) != __t) {
-        std::cout << "Error left" << __t->right_key() << ' ' << 
-        static_cast<_Tree_link_type>(__t->_left)->right_key();
+        std::cout << "Error left" << __t->right_key() << ' ' << static_cast<_Tree_link_type>(__t->_left)->right_key();
         for (auto i(static_cast<_Tree_node_ptr>(__t)); i != nullptr; i = i->_right)
           std::cout << ' ' << 0;
         std::cout << std::endl;
@@ -300,7 +327,13 @@ public:
     _Tree_node_ptr t(_M_header._parent);
     for (int i{0}; t->_left != nullptr || t->_right != nullptr; i++) {
       _Tree_link_type tl(static_cast<_Tree_link_type>(t));
-      std::cout << "node " << i << " " << (tl->_has_mid) << ' ' << (tl->_right_key) << ' ' << (tl->_left != nullptr) << ' ' << (tl->_right != nullptr);
+
+      _Tree_link_type l{static_cast<_Tree_link_type>(tl->_left)};
+      _Tree_link_type r{static_cast<_Tree_link_type>(tl->_right)};
+      if (l != nullptr) l->push_down(tl->_add);
+      r->push_down(tl->_add);
+      tl->_add = _Tp();
+
       if (!tl->_has_mid || __key > static_cast<_Tree_link_type>(tl->_left)->_right_key) {
         t = t->_right;
         std::cout << " turn right" << std::endl;
@@ -310,7 +343,7 @@ public:
       }
     }
     _Leaf_link_type l(static_cast<_Leaf_link_type>(t));
-    std::cout << "xxx " << l->key() << ' ' << l->val() << std::endl;
+    std::cout << "xxx " << l->key() << ' ' << l->val() << ' ' << l->_sum << std::endl;
     return l->val();
   }
 };

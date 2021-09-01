@@ -269,6 +269,33 @@ int main() {
     for (int i(0); i < 100; i++) 
       test(sec6.query(lla, i) == i * (i - 1) / 2);
   }
+  testpart("checking query and add range");
+ {
+    section<int, int> sec0;
+    for (int i(0); i < 100; i++) 
+      sec0.insert(i, 0);
+    for (int i(1); i < 100; i++) 
+      sec0.add_range(i, 100, 1);
+    
+    const int la{15};
+    for (int i(la + 1); i < 100; i++)
+      test(sec0.query(la, i) == (i - la) * (i + la - 1) / 2);
+
+    const int ra{125};
+    for (int i(0); i < 100; i++)
+      test(sec0.query(i, ra) == (100 - i) * (i + 99) / 2);
+
+    const int lla{-10};
+    for (int i(0); i < 100; i++) 
+      test(sec0.query(lla, i) == i * (i - 1) / 2);
+
+    for (int i(1); i < 100; i++) 
+      sec0.add_range(i, 100, 1);
+
+    for (int i(0); i < 100; i++)
+      test(sec0.get(i) == i * 2);
+    sec0.traverse();
+  }
   testpart("STOP TEST");  //mark stop test, essential.
 
   cout << "-----------------------" << endl;

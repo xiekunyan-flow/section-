@@ -28,13 +28,15 @@ class _Section_tree_node : public _Section_tree_node_base {
   _Key _right_key;
   bool _has_mid;
   bool _Is_leaf;
-  _Tp _sum;  //当前版本只能求和
-  unsigned _size;
+  _Tp _sum;        //当前版本只能求和
+  unsigned _size;  //该节点下有多少个叶子结点
+  _Tp _add;        //该节点下的所有叶子节点增加的值
  public:
-  _Section_tree_node<_Key, _Tp>() noexcept : _left_key(_Key()), _right_key(_Key()), _has_mid(false), _Is_leaf(false), _sum(_Tp()), _size(1) {}
+  _Section_tree_node<_Key, _Tp>() noexcept : _left_key(_Key()), _right_key(_Key()), _has_mid(false), _Is_leaf(false), _sum(_Tp()), _add(_Tp()), _size(1) {}
 
-  _Section_tree_node<_Key, _Tp>(_Key __left_key, _Key __right_key, _Tp __sum) noexcept : _left_key(__left_key), _right_key(__right_key), _has_mid(false), _Is_leaf(false), _sum(__sum), _size(1) {}
+  _Section_tree_node<_Key, _Tp>(_Key __left_key, _Key __right_key, _Tp __sum) noexcept : _left_key(__left_key), _right_key(__right_key), _has_mid(false), _Is_leaf(false), _sum(__sum), _add(_Tp()), _size(1) {}
 
+  //和家福说的 push_up 很类似
   void maintence() {
     auto r(static_cast<_Section_tree_node<_Key, _Tp>*>(_right));
     _sum = r->_sum;
@@ -49,7 +51,10 @@ class _Section_tree_node : public _Section_tree_node_base {
       _size += l->_size;
     }
   }
-
+  virtual void push_down(_Tp __d_add) {
+    _add += __d_add;
+    _sum += __d_add * _size;
+  }
   const _Key& right_key() {
     return _right_key;
   }
@@ -164,8 +169,10 @@ class _Section_tree_node : public _Section_tree_node_base {
 
     if (_left != nullptr)
       _left_key = static_cast<_Tree_link_type>(_left)->_left_key;
-      _size += static_cast<_Tree_link_type>(_left)->_size;
-
+    _size += static_cast<_Tree_link_type>(_left)->_size;
+  }
+  virtual inline void push_up(_Tp __d_add, unsigned __size) {
+    _sum += __d_add * __size;
   }
 };
 

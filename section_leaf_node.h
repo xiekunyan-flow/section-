@@ -48,7 +48,14 @@ namespace J{
                 
                 _pair = tp;
             }
-
+            virtual void push_down(_Tp __d_add) {
+                _Section_tree_node<_Key, _Tp>::_sum += __d_add;
+                _pair.second += __d_add;
+            }
+            virtual inline void push_up(_Tp __d_add, unsigned __size) {
+                _Section_tree_node<_Key, _Tp>::_sum += __d_add;
+                _pair.second += __d_add;
+            }
             virtual _Tree_link_type insert_topasa(_Tree_link_type p) {
                 if (key() == 8) 
                     std::cout << "key is 8" << std::endl;
