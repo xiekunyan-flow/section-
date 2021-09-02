@@ -261,6 +261,13 @@ class section {
   }
 
  public:
+ /**
+  * @brief 
+  * 
+  * @param __l 
+  * @param __r 
+  * @param __d_add 
+  */
   void add_range(key_type __l, key_type __r, mapped_type __d_add) {
     if (__l >= __r) return;
     add_range(static_cast<_Tree_link_type>(_M_header._parent), __l, __r, __d_add);
