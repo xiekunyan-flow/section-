@@ -206,8 +206,6 @@ class section {
       //Step 5: 重复Step 3 至 4
     }
 
-    //Step 6: 修复底层链路
-
     //TODO 现在默认可以插入成功, 因而标记_size++
     ++_M_header._size;
   }

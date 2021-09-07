@@ -7,8 +7,8 @@
 #include <set>
 #include <string>
 
-#include "section.h"
-#include "section_node.h"
+#include "pkg/dreamcompany/section.h"
+#include "pkg/dreamcompany/section_node.h"
 using namespace ::std;
 using namespace ::J;
 using namespace ::J::basic;

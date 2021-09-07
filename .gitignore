@@ -6,3 +6,8 @@
 !*.cpp
 !*.txt
 !*.gitignore
+
+!/pkg
+!/pkg/dreamcompany
+!/pkg/dreamcompany/*.cc
+!/pkg/dreamcompany/*.h
