@@ -36,30 +36,11 @@ class _Section_tree_node : public _Section_tree_node_base {
 
   _Section_tree_node<_Key, _Tp>(_Key __left_key, _Key __right_key, _Tp __sum) noexcept : _left_key(__left_key), _right_key(__right_key), _has_mid(false), _Is_leaf(false), _sum(__sum), _add(_Tp()), _size(1) {}
 
-  //和家福说的 push_up 很类似
-  void maintence() {
-    auto r(static_cast<_Section_tree_node<_Key, _Tp>*>(_right));
-    _sum = r->_sum;
-    _right_key = r->_right_key;
-    _left_key = r->left_key();
-    _size = r->_size;
-
-    if (_left != nullptr) {
-      auto l(static_cast<_Section_tree_node<_Key, _Tp>*>(_left));
-      _sum += l->_sum;
-      _left_key = l->left_key();
-      _size += l->_size;
-    }
-  }
-  virtual void push_down(_Tp __d_add) {
-    _add += __d_add;
-    _sum += __d_add * _size;
-  }
-  const _Key& right_key() const {
+  inline const _Key& right_key() const {
     return _right_key;
   }
 
-  const _Key& left_key() const {
+  inline const _Key& left_key() const {
     return _left_key;
   }
 
@@ -158,22 +139,42 @@ class _Section_tree_node : public _Section_tree_node_base {
   }
 
   /**
-   * @brief 更新数值信息: 和
+   * @brief 没有参数, 用来修复诸如 right_key, left_key, _size, _sum
    * 
    */
   void push_up() {
-    _sum = static_cast<_Tree_link_type>(_left)->_sum + static_cast<_Tree_link_type>(_right)->_sum;
-    _right_key = static_cast<_Tree_link_type>(_right)->_right_key;
-    _left_key = static_cast<_Tree_link_type>(_right)->_left_key;
-    _size = static_cast<_Tree_link_type>(_right)->_size;
+    auto r(static_cast<_Section_tree_node<_Key, _Tp>*>(_right));
+    _sum = r->_sum;
+    _right_key = r->_right_key;
+    _left_key = r->left_key();
+    _size = r->_size;
 
-    if (_left != nullptr)
-      _left_key = static_cast<_Tree_link_type>(_left)->_left_key;
-    _size += static_cast<_Tree_link_type>(_left)->_size;
+    if (_left != nullptr) {
+      auto l(static_cast<_Section_tree_node<_Key, _Tp>*>(_left));
+      _sum += l->_sum;
+      _left_key = l->left_key();
+      _size += l->_size;
+    }
   }
-  
+
+  /**
+   * @brief 用于修改(非叶子节点 a)后给根链路上的节点修复
+   * 
+   * @param __d_add 修改的值
+   * @param __size 修改的非叶子节点的叶子节点数
+   */
   virtual inline void push_up(_Tp __d_add, unsigned __size) {
     _sum += __d_add * __size;
+  }
+
+  /**
+   * @brief 用于查询时将父节点的增加值传给子节点
+   * 
+   * @param __d_add 父节点的 _add
+   */
+  virtual void push_down(_Tp __d_add) {
+    _add += __d_add;
+    _sum += __d_add * _size;
   }
 };
 

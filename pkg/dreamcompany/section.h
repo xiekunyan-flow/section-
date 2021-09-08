@@ -141,15 +141,10 @@ class section {
     std::cout << p->right_key() << std::endl;
     _Leaf_link_type p2(static_cast<_Leaf_link_type>(p->_right));
 
-    _Tree_link_type ac{nullptr};
+    _Tree_link_type ac{a};
     for (int level(0);; level++) {
       //Step 3: 尝试插入
-      _Tree_link_type pc{nullptr};
-      if (!level) {
-        pc = a->insert_topasa(p);
-      } else {
-        pc = ac->insert_topasa(p);
-      }
+      _Tree_link_type pc{ac->insert_topasa(p)};
 
       //Step 3.1: 修复父节点
       p->push_up();
@@ -157,14 +152,14 @@ class section {
       if (pc == p) {
         //Step 4.1: 情况一, p 只有一个孩子, 所以直接插入
         for (auto pc(p); static_cast<_Tree_node_ptr>(pc) != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
-          pc->maintence();
+          pc->push_up();
         _M_header._node_count++;
         break;
       } else if (pc == static_cast<_Tree_link_type>(p->_next)) {
         for (auto pc(p); static_cast<_Tree_node_ptr>(pc) != &_M_header; pc = static_cast<_Tree_link_type>(pc->_parent))
-          pc->maintence();
+          pc->push_up();
         for (auto px(pc); static_cast<_Tree_node_ptr>(px) != &_M_header; px = static_cast<_Tree_link_type>(px->_parent))
-          px->maintence();
+          px->push_up();
         _M_header._node_count++;
         traverse();
         break;
@@ -210,7 +205,7 @@ class section {
   }
 
   /**
-   * @brief 得到 __t 中 key 位于 [__l, __r) 之间的叶子结点的 value 和
+   * @brief 得到 __t 中 key 位于 [__l, __r) 之间的叶子结点的 value 和. O(log n)
    * 
    * @param __t 非叶子节点
    * @param __l 最小值(含)
@@ -324,13 +319,13 @@ class section {
     int i{0};
     for (_Tree_node_ptr t(_M_header._parent); t != nullptr; i++) {
       std::cout << "level " << i << std::endl;
-      _Key k(static_cast<_Tree_link_type>(t)->_right_key);
+      _Key k(static_cast<_Tree_link_type>(t)->right_key());
       for (_Tree_node_ptr t0(t); t0 != nullptr && t0 != &_M_header; t0 = t0->_next) {
         _Tree_link_type l(static_cast<_Tree_link_type>(t0));
         std::cout << "(" << l->left_key() << ", " << l->right_key() << ", " << l->_size << ", " << l->_sum << ") ";
-        if (k > l->_right_key)
+        if (k > l->right_key())
           std::cout << "Wrong" << std::endl;
-        k = l->_right_key;
+        k = l->right_key();
       }
       std::cout << std::endl;
       if (t->_left != nullptr)
@@ -351,7 +346,7 @@ class section {
       r->push_down(tl->_add);
       tl->_add = _Tp();
 
-      if (!tl->_has_mid || __key > static_cast<_Tree_link_type>(tl->_left)->_right_key) {
+      if (!tl->_has_mid || __key > static_cast<_Tree_link_type>(tl->_left)->right_key()) {
         t = t->_right;
         std::cout << " turn right" << std::endl;
       } else {
