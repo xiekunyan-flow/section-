@@ -35,7 +35,7 @@ namespace J{
                 return _pair.second;
             }
 
-            _Pair& pair() {
+            _Pair& pair() const {
                 return _pair;
             }
 
@@ -57,8 +57,6 @@ namespace J{
                 _pair.second += __d_add;
             }
             virtual _Tree_link_type insert_topasa(_Tree_link_type p) {
-                if (key() == 8) 
-                    std::cout << "key is 8" << std::endl;
                 return _Section_tree_node<_Key, _Tp>::insert_topasa(p);
             }
         };

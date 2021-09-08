@@ -55,11 +55,11 @@ class _Section_tree_node : public _Section_tree_node_base {
     _add += __d_add;
     _sum += __d_add * _size;
   }
-  const _Key& right_key() {
+  const _Key& right_key() const {
     return _right_key;
   }
 
-  const _Key& left_key() {
+  const _Key& left_key() const {
     return _left_key;
   }
 
@@ -171,6 +171,7 @@ class _Section_tree_node : public _Section_tree_node_base {
       _left_key = static_cast<_Tree_link_type>(_left)->_left_key;
     _size += static_cast<_Tree_link_type>(_left)->_size;
   }
+  
   virtual inline void push_up(_Tp __d_add, unsigned __size) {
     _sum += __d_add * __size;
   }

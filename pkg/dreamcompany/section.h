@@ -23,8 +23,6 @@ class section {
   typedef _Alloc allocator_type;
 
  protected:
-  // typedef _Section_node_base* 	    	_Base_ptr;
-  // typedef const _Section_node_base*   	_Const_Base_ptr;
   typedef _Section_leaf_node_base* _Leaf_node_ptr;
   typedef const _Section_leaf_node_base* _Const_leaf_node_ptr;
   typedef _Section_tree_node_base* _Tree_node_ptr;
@@ -92,7 +90,7 @@ class section {
     *         want to insert __Key.
     * @param  __Key  key of the node to be inserted.
     */
-  _Tree_link_type _get_insert_unique_pos(key_type __Key) {
+  _Tree_link_type _get_insert_unique_pos(key_type __Key) const {
     //确保这里树不为空了已经了
     _Tree_node_ptr tl(_M_header._parent);
     for (; tl->_left != nullptr || tl->_right != nullptr;) {
@@ -136,10 +134,6 @@ class section {
 
       return;
     }
-    /*FIXME
-     * 插入过程: 找到插入位置, 平衡
-     * 勿忘: _M_header _node_count可能变化, 插入成功则 _size++
-     */
     //Step 2 : 寻找到插入位置
     if (__key == 6)
       __key = 6;
@@ -211,11 +205,19 @@ class section {
   }
 
  private:
-  _Pair get_min_pair() {
+  _Pair get_min_pair() const {
     return static_cast<_Leaf_link_type>(_M_header._next)->pair();
   }
 
-  mapped_type get_sum(_Tree_link_type __t, key_type __l, key_type __r) {
+  /**
+   * @brief 得到 __t 中 key 位于 [__l, __r) 之间的叶子结点的 value 和
+   * 
+   * @param __t 非叶子节点
+   * @param __l 最小值(含)
+   * @param __r 最大值(不含)
+   * @return mapped_type 和
+   */
+  mapped_type get_sum(_Tree_link_type __t, key_type __l, key_type __r) const {
     if (__t == nullptr) return mapped_type();
     key_type mr(__t->right_key());
     key_type ml(__t->left_key());
@@ -233,16 +235,24 @@ class section {
   /**
    * @brief 求指定[__l, __r) 范围内的和
    * 
-   * @param __l 左 _Key
-   * @param __r 右 _Key
-   * @return mapped_type 
+   * @param __l 最小值(含)
+   * @param __r 最大值(不含)
+   * @return mapped_type 和
    */
-  mapped_type query(key_type __l, key_type __r) {
+  mapped_type query(key_type __l, key_type __r) const {
     if (__l >= __r) return mapped_type();
     return get_sum(static_cast<_Tree_link_type>(_M_header._parent), __l, __r);
   }
 
  private:
+  /**
+    * @brief 对 __t 下, key 处于 [__l, __r) 之间的所有叶子节点增加 __d_add
+    * 
+    * @param __t 非叶子节点
+    * @param __l 最小值(含)
+    * @param __r 最大值(不含)
+    * @param __d_add 增加值
+    */
   void add_range(_Tree_link_type __t, key_type __l, key_type __r, mapped_type __d_add) {
     if (__t == nullptr) return;
     key_type mr(__t->right_key());
@@ -259,13 +269,13 @@ class section {
   }
 
  public:
- /**
-  * @brief 
-  * 
-  * @param __l 
-  * @param __r 
-  * @param __d_add 
-  */
+  /**
+    * @brief 对 key 处于 [__l, __r) 之间的所有叶子节点增加 __d_add
+    * 
+    * @param __l 最小值(含)
+    * @param __r 最大值(不含)
+    * @param __d_add 增加值
+    */
   void add_range(key_type __l, key_type __r, mapped_type __d_add) {
     if (__l >= __r) return;
     add_range(static_cast<_Tree_link_type>(_M_header._parent), __l, __r, __d_add);
@@ -276,7 +286,8 @@ class section {
     return _M_header._size;
   }
 
- public:
+ private:
+  // for traverse
   void dfs(_Tree_link_type __t, std::string __s) const {
     __s += std::to_string(__t->right_key()) + " " + (__t->_has_mid ? "w " : "r ");
     if (__t->_left != nullptr) {
@@ -301,13 +312,14 @@ class section {
       std::cout << __s << std::endl;
     }
   }
+ public:
+  /**
+   * @brief 这是一个测试函数, 用来得到整个树的结构. 通过两种方式得到树的结构, 
+   *        1. 得到每一条从根到叶子的路径
+   *        2. 层次遍历
+   * 
+   */
   void traverse() const {
-    //TODO 清理
-    // for (_Tree_node_ptr l(_M_header._next); static_cast<_Section_node_header*>(l) != &_M_header; l = l->_next) {
-    //   _Leaf_link_type lc{static_cast<_Leaf_link_type>(l)};
-    //   std::cout << lc->val() << ' ';
-    // }
-    // std::cout << std::endl;
     dfs(static_cast<_Tree_link_type>(_M_header._parent), "");
     int i{0};
     for (_Tree_node_ptr t(_M_header._parent); t != nullptr; i++) {
@@ -328,7 +340,7 @@ class section {
     }
   }
 
-  _Tp get(_Key __key) {
+  _Tp get(_Key __key) const {
     _Tree_node_ptr t(_M_header._parent);
     for (int i{0}; t->_left != nullptr || t->_right != nullptr; i++) {
       _Tree_link_type tl(static_cast<_Tree_link_type>(t));
