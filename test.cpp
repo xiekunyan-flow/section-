@@ -149,7 +149,7 @@ int main() {
 
     test(nullptr == tn._left && nullptr == tn._right && nullptr == tn._parent, "Testing section_tree_node successfully inherit from _Section_tree_node_base, show its _left: ", tn._left, ", expected nullptr. ._right: ", tn._right, ", expected nullptr. ._parent: ", tn._parent, ", expected nullptr.");
   }
-  testpart("Checking section");
+  testpart("Checking section base");
   {
     section<int, int> sec;
     test(true, "New section<int, pair<int, int> > sec");
@@ -163,7 +163,7 @@ int main() {
     sec.traverse();
 
     sec.insert(0, 3);
-    test(sec.size() == 2, "Insert another");
+    test(sec.size() == 2, "Insert another, checking whether its size is right for 2");
 
     sec.traverse();
 
@@ -171,8 +171,8 @@ int main() {
     _Section_leaf_node<int, int> l2(2, 30);
 
     (&l1)->swap(&l2);
-
-    test(l1.val() == 30 && l2.val() == 20, "test swap");
+    test(true, "Add new node l1 with value", l1.val(), ", and l2 with value", l2.val(), ". Then swap them.");
+    test(l1.val() == 30 && l2.val() == 20, "Test swap, l1's value is ", l1.val(), ", expected 30. l2's value is ", l2.val(), ", expected 20");
 
     section<int, int> sec2;
 
@@ -182,59 +182,67 @@ int main() {
 
     sec2.traverse();
 
-    test(sec2.size() == 3, "insert 3");
+    test(sec2.size() == 3, "insert 3, its size is ", sec2.size(), ", expected 3.");
 
     sec2.insert(3, 3);
     sec2.traverse();
 
-    test(sec2.size() == 4, "insert 4");
+    test(sec2.size() == 4, "insert 4, its size is ", sec2.size(), "expected 4.");
 
-    // for (int i(4); i < 10; i++) {
-    //     sec2.insert(i, i);
-    //     sec2.traverse();
-    //     test(sec2.size() == i + 1, "insert ", i+1, " nodes");
-    // }
-
-    test(sec2.get(0) == 0);
-
+    test(sec2.get(0) == 0, "Insert (0, 0), then get value of key 0 is ", sec2.get(0), ", expected 0");
+  }
+  testpart("Checking section insert");
+  {
     section<int, int> sec3;
+    test(true, "Construct new section<int, int> sec3, we will insert 5 nodes( (0, 0), (4, 400), (1, 100), (2, 200), (10, 1000) ), and check that we can get values of keys by every insert step.");
 
     sec3.insert(0, 0);
+    test(true, "sec3 insert (0, 0).");
 
-    test(sec3.get(0) == 0);
+    test(sec3.get(0) == 0, "sec3.get(0) = ", sec3.get(0), ", expected 0");
 
     sec3.insert(4, 400);
-    test(sec3.get(4) == 400);
-    test(sec3.get(0) == 0);
+    test(true, "sec3 insert (4, 400).");
+
+    test(sec3.get(4) == 400, "sec3.get(4) = ", sec3.get(4), ", expected 400");
+    test(sec3.get(0) == 0, "sec3.get(0) = ", sec3.get(0), ", expected 0");
 
     sec3.insert(1, 100);
-    test(sec3.get(0) == 0);
-    test(sec3.get(1) == 100);
-    test(sec3.get(4) == 400);
+    test(true, "sec3 insert (1, 100).");
+
+    test(sec3.get(0) == 0, "sec3.get(0) = ", sec3.get(0), ", expected 0");
+    test(sec3.get(1) == 100, "sec3.get(1) = ", sec3.get(1), ", expected 100");
+    test(sec3.get(4) == 400, "sec3.get(4) = ", sec3.get(4), ", expected 400");
 
     sec3.insert(2, 200);
-    test(sec3.get(0) == 0);
-    test(sec3.get(1) == 100);
-    test(sec3.get(2) == 200);
-    test(sec3.get(4) == 400);
+    test(true, "sec3 insert (2, 200).");
+
+    test(sec3.get(0) == 0, "sec3.get(0) = ", sec3.get(0), ", expected 0");
+    test(sec3.get(1) == 100, "sec3.get(1) = ", sec3.get(1), ", expected 100");
+    test(sec3.get(2) == 200, "sec3.get(2) = ", sec3.get(2), ", expected 200");
+    test(sec3.get(4) == 400, "sec3.get(4) = ", sec3.get(4), ", expected 400");
 
     sec3.insert(10, 1000);
-    test(sec3.get(0) == 0);
-    test(sec3.get(1) == 100);
-    test(sec3.get(2) == 200);
-    test(sec3.get(4) == 400);
-    test(sec3.get(10) == 1000);
+    test(true, "sec3 insert (10, 1000).");
+
+    test(sec3.get(0) == 0, "sec3.get(0) = ", sec3.get(0), ", expected 0");
+    test(sec3.get(1) == 100, "sec3.get(1) = ", sec3.get(1), ", expected 100");
+    test(sec3.get(2) == 200, "sec3.get(2) = ", sec3.get(2), ", expected 200");
+    test(sec3.get(4) == 400, "sec3.get(4) = ", sec3.get(4), ", expected 400");
+    test(sec3.get(10) == 1000, "sec3.get(10) = ", sec3.get(10), ", expected 1000");
 
     section<int, int> sec4;
+    test(true, "Construct sec4. Then insert 50 nodes, and check their values.");
     for (int i(10); i < 20; i++) sec4.insert(i, i + 50);
     for (int i(30); i < 40; i++) sec4.insert(i, i + 50);
     for (int i(0); i < 10; i++) sec4.insert(i, i + 50);
     for (int i(40); i < 50; i++) sec4.insert(i, i + 50);
     for (int i(20); i < 30; i++) sec4.insert(i, i + 50);
 
-    for (int i(0); i < 50; i++) test(sec4.get(i) == i + 50, "check key is ", i);
+    for (int i(0); i < 50; i++) test(sec4.get(i) == i + 50, "check key is ", i, ", with value of ", sec4.get(i), ", expected ", i + 50);
 
     section<int, int> sec5;
+    test(true, "Construct section sec5. Then insert 100 nodes with (0, 0), (1, 1), (2, 2), ..., (11, 11).");
     for (int i(0); i < 4; i++) {
       sec5.insert(i, i);
       sec5.traverse();
@@ -248,26 +256,27 @@ int main() {
       sec5.traverse();
     }
     for (int i(0); i < 12; i++) {
-      test(sec5.get(i) == i);
+      test(sec5.get(i) == i, "sec5.get(", i, ") = ", sec5.get(i));
     }
 
     section<int, int> sec6;
+    test(true, "Construct section sec6. Then insert 100 nodes with (0, 0), (1, 1), (2, 2), ..., (99, 99).");
     for (int i(0); i < 100; i++) sec6.insert(i * 97 % 100, i * 97 % 100);
 
-    for (int i(0); i < 100; i++) test(sec6.get(i) == i);
+    for (int i(0); i < 100; i++) test(sec6.get(i) == i, "sec6.get(", i, ") = ", sec6.get(i));
     sec6.traverse();
 
     const int la{15};
     for (int i(la + 1); i < 100; i++)
-      test(sec6.query(la, i) == (i - la) * (i + la - 1) / 2);
+      test(sec6.query(la, i) == (i - la) * (i + la - 1) / 2, "Query sum from ", la, " to ", i, ", the result is ", sec6.query(la, i), ", expected result ", (i - la) * (i + la - 1) / 2);
 
     const int ra{125};
     for (int i(0); i < 100; i++)
-      test(sec6.query(i, ra) == (100 - i) * (i + 99) / 2);
+      test(sec6.query(i, ra) == (100 - i) * (i + 99) / 2, "Query sum from ", i, " to ", ra, "(The max key in tree is 99), get sum of ", sec6.query(i, ra), ", expected ", (100 - i) * (i + 99) / 2);
 
     const int lla{-10};
     for (int i(0); i < 100; i++) 
-      test(sec6.query(lla, i) == i * (i - 1) / 2);
+      test(sec6.query(lla, i) == i * (i - 1) / 2, "Query sum between ", lla, "(The min key in section tree is 0) and ", i, ", get sum of ", sec6.query(lla, i), ", expected i * (i - 1) / 2");
   }
   testpart("checking query and add range");
  {
@@ -277,23 +286,25 @@ int main() {
     for (int i(1); i < 100; i++) 
       sec0.add_range(i, 100, 1);
     
+    test(true, "Construct section sec0 with 100 node of key between 0 and 100, then add range 100 time to make it ascending.");
     const int la{15};
     for (int i(la + 1); i < 100; i++)
-      test(sec0.query(la, i) == (i - la) * (i + la - 1) / 2);
+      test(sec0.query(la, i) == (i - la) * (i + la - 1) / 2, "Query sum from ", la, " to ", i, ", the result is ", sec0.query(la, i), ", expected result ", (i - la) * (i + la - 1) / 2);
 
     const int ra{125};
     for (int i(0); i < 100; i++)
-      test(sec0.query(i, ra) == (100 - i) * (i + 99) / 2);
+      test(sec0.query(i, ra) == (100 - i) * (i + 99) / 2, "Query sum from ", i, " to ", ra, "(The max key in tree is 99), get sum of ", sec0.query(i, ra), ", expected ", (100 - i) * (i + 99) / 2);
 
     const int lla{-10};
     for (int i(0); i < 100; i++) 
-      test(sec0.query(lla, i) == i * (i - 1) / 2);
+      test(sec0.query(lla, i) == i * (i - 1) / 2, "Query sum between ", lla, "(The min key in section tree is 0) and ", i, ", get sum of ", sec0.query(lla, i), ", expected i * (i - 1) / 2");
 
     for (int i(1); i < 100; i++) 
       sec0.add_range(i, 100, 1);
+    test(true, "sec0 add range from 0 to 100 1");
 
     for (int i(0); i < 100; i++)
-      test(sec0.get(i) == i * 2);
+      test(sec0.get(i) == i * 2, "get value of key", i, ", value: ", sec0.get(i), ", expected ", i * 2);
     sec0.traverse();
   }
   testpart("STOP TEST");  //mark stop test, essential.
