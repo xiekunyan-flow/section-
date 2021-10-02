@@ -335,7 +335,7 @@ class section {
     }
   }
 
-  _Tp get(_Key __key) const {
+  mapped_type get(_Key __key) const {
     _Tree_node_ptr t(_M_header._parent);
     for (int i{0}; t->_left != nullptr || t->_right != nullptr; i++) {
       _Tree_link_type tl(static_cast<_Tree_link_type>(t));

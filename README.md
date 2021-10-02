@@ -11,7 +11,16 @@
   - [目录](#目录)
   - [核心功能](#核心功能)
   - [设计思路](#设计思路)
-  - [接口列表](#接口列表)
+  - [使用方式](#使用方式)
+    - [例子](#例子)
+    - [接口列表](#接口列表)
+      - [section](#section)
+      - [get](#get)
+      - [query](#query)
+      - [size](#size)
+      - [traverse](#traverse)
+      - [insert](#insert)
+      - [add_range](#add_range)
   - [目标](#目标)
 
 ## 核心功能
@@ -24,10 +33,75 @@
 
 数据结构基于动态开点线段树和B+树，key-value结构，支持单点插入，区间修改和区间查找。  
 
+## 使用方式
 
-## 接口列表
+### 例子
 
-void insert(key_type __key, mapped_type __value) 插入  
+```cpp
+section<int, int> sectionA;  
+sectionA.insert(1,1);  
+sectionA.insert(3,5);  
+sectionA.query(1,3) //查询[1,3)的和：1  
+sectionA.add_range(1,4,2) //将[1,4)区间内的所有节点值+1  
+sectionA.query(1,4) //查询[143)的和：8  
+```
+
+### 接口列表
+
+#### section
+
+```cpp
+section<key_type, mapped_type> your_sec;
+```
+
+#### get
+
+```cpp
+mapped_type get(_Key __key) const;
+```
+
+得到 `key` 对应的键
+
+#### query
+
+```cpp
+mapped_type query(key_type __l, key_type __r);
+```
+
+返回键位于 $[__l, __r)$ 内的值的和
+
+#### size
+
+```cpp
+unsigned long size() const;
+```
+
+返回线段树的叶子节点数
+
+#### traverse
+
+```cpp
+void traverse() const;
+```
+
+使用 `cout` 输出线段树的结构，先依次输出线段树每一个从根节点到叶节点的路径，再输出层次遍历线段树的结果
+
+#### insert
+
+```cpp
+void insert(key_type, mapped_type);
+```
+
+插入 `(<key_type, mapped_type)` 键值对
+
+#### add_range
+
+```cpp
+void add_range(key_type __l, key_type __r, mapped_type __d_add);
+```
+
+将键位于 $[__l, __r)$ 的值都增加 `__d_add` 
+
 mapped_type query(key_type __l, key_type __r) 查询  
 void add_range(key_type __l, key_type __r, mapped_type __d_add) 区间修改  
 
