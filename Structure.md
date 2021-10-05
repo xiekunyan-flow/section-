@@ -1,4 +1,5 @@
 # Algorithm
+
 ## Insert and Rebalanced
 1. 新建插入的`_Section_leaf_node`节点a
 2. 寻找到插入位置（节点a应该的父亲p），若无，则新建根节点
